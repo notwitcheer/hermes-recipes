@@ -15,10 +15,9 @@ Hermes Agent is Nous Research's open-source agent: autonomous skill creation, pe
 live:
 
 - [24/7 Hermes Agent on a Mac Mini M4: crons, approvals, and a gateway that stays up](recipes/mac-mini-24-7/): the launchd gotcha and watchdog, the `[SILENT]` cron pattern, a git-synced workspace, and the human-in-the-loop approval rule
+- [Hermes Agent on a cheap VPS: zero to a Telegram gateway that survives reboot](recipes/cheap-vps/): the secure-box hardening script, the install one-liner, driving it interactively over tmux, and the systemd setup (with the #42065 install gotcha) that brings it back after a reboot
 
 coming next:
-
-- Hermes Agent on a cheap vps: zero to Telegram gateway
 - extending Hermes Agent with a custom mcp server (TypeScript)
 - persistent memory and fts5 recall in practice
 
