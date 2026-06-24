@@ -16,6 +16,7 @@ live:
 
 - [24/7 Hermes Agent on a Mac Mini M4: crons, approvals, and a gateway that stays up](recipes/mac-mini-24-7/): the launchd gotcha and watchdog, the `[SILENT]` cron pattern, a git-synced workspace, and the human-in-the-loop approval rule
 - [Hermes Agent on a cheap VPS: zero to a Telegram gateway that survives reboot](recipes/cheap-vps/): the secure-box hardening script, the install one-liner, driving it interactively over tmux, and the systemd setup (with the #42065 install gotcha) that brings it back after a reboot
+- [lock down a self-hosted Hermes Agent: what it exposes and how to keep it shut](recipes/secure-hermes/): the gateway opens no inbound port, the dashboard refuses a public bind without auth, the API server is off by default, plus secret hygiene, backup/restore, and least-privilege scoping, with an exposure-audit script
 
 coming next:
 - extending Hermes Agent with a custom mcp server (TypeScript)
