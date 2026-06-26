@@ -1,3 +1,8 @@
 .DS_Store
 .env
 *.env
+
+# generated site + staged copies (recipes/ and CHANGELOG.md are the source)
+site/
+docs/recipes/
+docs/changelog.md
