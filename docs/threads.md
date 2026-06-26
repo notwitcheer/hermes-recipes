@@ -18,6 +18,7 @@ one tested tip a day: the feature, and the thing that bit me.
 - [rule-file precedence](https://x.com/witcheer/status/2069385776756895880)
 - [`/learn`: read what it wrote, the generated SKILL.md frontmatter is unreliable](https://x.com/witcheer/status/2069828190197973337)
 - [disk fills up, it is not the logs](https://x.com/witcheer/status/2070141757707239594)
+- [computer-use: turn it on, and the install gotcha](https://x.com/witcheer/status/2070594190656815137)
 
 ## heads-up cards
 
@@ -28,6 +29,12 @@ a new feature ships, here is what it does and the number that matters.
 - [animated pets](https://x.com/witcheer/status/2069775736358007052)
 - [secure-hermes recipe announce](https://x.com/witcheer/status/2069797615517020280)
 - [creative-ideation](https://x.com/witcheer/status/2069869952245387445)
+
+## community pulse
+
+what the community keeps asking, and the short answer.
+
+- [why a cheap-model setup still burns money](https://x.com/witcheer/status/2070537693608509708)
 
 ## builder spotlights
 
