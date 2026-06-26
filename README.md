@@ -1,5 +1,7 @@
 # hermes-recipes
 
+browse it as a searchable site: **https://notwitcheer.github.io/hermes-recipes/**
+
 working configs and scripts from my [Hermes Agent](https://github.com/NousResearch/hermes-agent) walkthroughs. everything here ran on real hardware before it landed: a Mac Mini M4 that runs Hermes Agent 24/7, and an RTX 5090 Linux box for local inference.
 
 Hermes Agent is Nous Research's open-source agent: autonomous skill creation, persistent memory with cross-session recall, cron jobs, mcp support, 20+ messaging gateways. docs: https://hermes-agent.nousresearch.com
