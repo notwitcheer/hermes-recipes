@@ -4,6 +4,10 @@ working configs and scripts from my [Hermes Agent](https://github.com/NousResear
 
 Hermes Agent is Nous Research's open-source agent: autonomous skill creation, persistent memory with cross-session recall, cron jobs, MCP support, 20+ messaging gateways. [docs](https://hermes-agent.nousresearch.com).
 
+## the almanac
+
+these recipes usually start as posts in the witcheer almanac, my weekly notes from running local AI on my own hardware. read the back issues or subscribe at [buttondown.com/witcheer](https://buttondown.com/witcheer).
+
 ## the bar
 
 every command in a recipe ran on real hardware before publishing. no copy-paste from docs, no untested steps, no "should work". if a step has not been tested, it does not ship here.
