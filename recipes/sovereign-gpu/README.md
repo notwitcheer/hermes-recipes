@@ -7,7 +7,7 @@ everything here is layered on stock Hermes Agent: no fork, no gateway patches. a
 ## what you get
 
 - a model server and the Hermes gateway as boot-persistent system services, sized so a 27B model with 64K context fits a 32GB card with margin
-- an identity layer that actually steers the model: SOUL/USER/MEMORY templates carrying the directive patterns that stop an agent from freelancing
+- an identity layer that steers the model: SOUL/USER/MEMORY templates carrying the directive patterns that stop an agent from freelancing
 - a starter skill pack: a morning brief with a machine-dated news digest (the "model writes, never researches" architecture), a local card renderer for a headless box, and a markdown memory vault with CPU semantic search
 - the drain/restore pattern: borrow the whole GPU for a training run or benchmark and guarantee the agent comes back, safe to run from cron
 - the security posture for all of it: long-polling (zero inbound ports), a platform allowlist, and a sudoers rule scoped to exactly one service
@@ -67,12 +67,12 @@ this pattern has run my unattended overnight training jobs for weeks: the agent 
 
 ## part 5: the security posture
 
-- **long-polling means zero inbound ports.** the gateway polls out to your messaging platform; nothing connects in. no reverse proxy, no port forwarding, no exposure to keep patched. resist the urge to "improve" this.
+- **long-polling means zero inbound ports.** the gateway polls out to your messaging platform; nothing connects in. no reverse proxy and no port forwarding, so there is nothing exposed to keep patched. resist the urge to "improve" this.
 - **allowlist your platform.** e.g. `TELEGRAM_ALLOWED_USERS=<your numeric id>` in `~/.hermes/.env` (mode 600). a negative test matters here: message the bot from a second account and confirm silence.
 - **the model server binds 127.0.0.1.** the only consumer is the gateway on the same box.
-- **secrets live in `.env`, mode 600**, and `.env` edits need a gateway restart to load — the gateway reads it at start, not per message.
+- **secrets live in `.env`, mode 600**, and `.env` edits need a gateway restart to load: the gateway reads it at start, not per message.
 - **privacy split by construction:** the vault holds private context and is local-only; anything the agent publishes carries your public handle. the identity templates encode the rule; the vault skill enforces it at recall time.
 
 ## what this costs to run
 
-one idle 27B on a 5090 draws ~30W above desktop idle on my meter (UNVERIFIED on other cards, measure yours). the real cost is VRAM opportunity: the resident model owns the card, which is exactly what the drain/restore pattern is for.
+holding the model resident is nearly free: with the 27B loaded (24.8GB) and the agent idle, my card reports 6.5-7.8W (`nvidia-smi --query-gpu=power.draw`, sampled 2026-07-09). VRAM is the real cost, not watts: the resident model owns the card, which is exactly what the drain/restore pattern is for.
