@@ -1,0 +1,53 @@
+# Hermes Agent gateway as a system service — survives reboots, restarts on
+# crash, runs headless with no user session.
+#
+# install (after the official installer has set up ~/.hermes):
+#   sudo cp hermes-gateway.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now hermes-gateway
+#
+# alternatively `sudo hermes gateway install --system` writes a unit like this
+# one for you; keep a copy in version control either way, because a gateway
+# reinstall can regenerate it and you want to see the diff.
+#
+# gotchas that cost real debugging time:
+# - the Environment= lines matter: a systemd service has no login shell, so
+#   HOME/PATH/VIRTUAL_ENV must be explicit or hermes resolves nothing.
+# - long-polling means ZERO inbound ports: the box needs no port forwarding,
+#   no reverse proxy, no exposure. don't "fix" that.
+# - after `timedatectl set-timezone`, restart this service or your cron jobs
+#   keep firing on the old timezone.
+# - after any gateway reinstall, run `hermes cron list` — a reinstall can wipe
+#   scheduled jobs silently and nothing else will tell you.
+
+[Unit]
+Description=Hermes Agent Gateway - Messaging Platform Integration
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=%YOUR_USER%
+Group=%YOUR_USER%
+ExecStart=/home/%YOUR_USER%/.hermes/hermes-agent/venv/bin/python -m hermes_cli.main gateway run --replace
+WorkingDirectory=/home/%YOUR_USER%/.hermes
+Environment="HOME=/home/%YOUR_USER%"
+Environment="USER=%YOUR_USER%"
+Environment="LOGNAME=%YOUR_USER%"
+Environment="PATH=/home/%YOUR_USER%/.hermes/hermes-agent/venv/bin:/home/%YOUR_USER%/.hermes/hermes-agent/node_modules/.bin:/home/%YOUR_USER%/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="VIRTUAL_ENV=/home/%YOUR_USER%/.hermes/hermes-agent/venv"
+Environment="HERMES_HOME=/home/%YOUR_USER%/.hermes"
+Restart=always
+RestartSec=5
+RestartMaxDelaySec=300
+RestartSteps=5
+RestartForceExitStatus=75
+KillMode=mixed
+KillSignal=SIGTERM
+ExecReload=/bin/kill -USR1 $MAINPID
+TimeoutStopSec=210
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+# Scoped NOPASSWD: the agent (and unattended scripts) may start/stop exactly
+# one service — the model server — and nothing else. this is what makes the
+# drain/restore pattern safe to run from cron or from the agent's own tools:
+# no password prompt, no general root.
+#
+# install (NEVER edit sudoers files in place with an editor that doesn't
+# syntax-check; a broken sudoers locks you out of sudo):
+#   sudo visudo -f /etc/sudoers.d/llama-server-agent
+# then paste the rule below, with your username.
+#
+# verify before trusting it:
+#   sudo -n systemctl stop llama-server && sudo -n systemctl start llama-server
+#   sudo -n systemctl restart some-other-service   # must FAIL (password prompt)
+
+%YOUR_USER% ALL=(root) NOPASSWD: /usr/bin/systemctl start llama-server.service, /usr/bin/systemctl stop llama-server.service, /usr/bin/systemctl start llama-server, /usr/bin/systemctl stop llama-server

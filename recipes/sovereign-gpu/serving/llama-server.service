@@ -1,0 +1,46 @@
+# llama.cpp server as a system service — the model your agent talks to.
+#
+# install:
+#   sudo cp llama-server.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now llama-server
+#
+# worked example (RTX 5090 32GB): Qwen3.6-27B Q6_K at 64K context loads to
+# ~26GB of 32GB VRAM. size yours the same way: model file size + KV cache
+# (grows with --ctx-size) + ~1GB margin, checked against nvidia-smi.
+#
+# two flags that bite:
+#   --parallel 1   each extra slot DIVIDES the context between slots. one
+#                  agent = one slot = the full window.
+#   --model        point at a stable symlink you control (ln -s), never the
+#                  HF blob path. model swaps become one ln -sf + restart, and
+#                  your agent config never changes.
+#   --alias        pins the model name the API reports, so the agent's config
+#                  stays valid across quant swaps behind the symlink.
+
+[Unit]
+Description=llama.cpp server for Hermes Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%YOUR_USER%
+Group=%YOUR_USER%
+ExecStart=/home/%YOUR_USER%/llama.cpp/build/bin/llama-server \
+  --model /home/%YOUR_USER%/models/current-model.gguf \
+  --host 127.0.0.1 --port 8090 \
+  --n-gpu-layers 99 --ctx-size 65536 --parallel 1 --flash-attn on \
+  --cache-type-k q8_0 --cache-type-v q8_0 \
+  --alias current-model.gguf
+Restart=always
+RestartSec=5
+TimeoutStartSec=180
+
+[Install]
+WantedBy=multi-user.target
+
+# optional: if your model ships an MTP head (e.g. Qwen3.6 MTP builds),
+# self-speculative decoding is nearly free throughput. add:
+#   --spec-type draft-mtp --spec-draft-n-max 2
+# measured on the example rig: ~1.8-2.2x decode at batch 1, no quality change
+# (greedy speculative decoding is lossless).
