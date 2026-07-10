@@ -24,7 +24,7 @@ scripts/    news_digest.py, news_digest.sh
 
 ## prerequisites
 
-- a Linux box with an NVIDIA card that fits your chosen model (worked example throughout: 27B Q6_K + 64K context ≈ 26GB of a 32GB card)
+- a Linux box with an NVIDIA card that fits your chosen model (worked example throughout: 27B Q6_K + 64K context ≈ 24GB of a 32GB card with the q8_0 KV cache the unit ships; measured live 2026-07-10: 21.3GB weights + 2.9GB KV and buffers)
 - llama.cpp built with CUDA (`-DGGML_CUDA=ON`), and a GGUF you've picked
 - Hermes Agent installed and a messaging platform configured: follow the official docs at https://hermes-agent.nousresearch.com; this recipe starts where the installer ends
 - `uv` for the skill venvs (Hermes' own venv is pip-less by design; every skill that needs a dependency gets its own environment)

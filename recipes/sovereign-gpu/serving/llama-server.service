@@ -5,7 +5,8 @@
 #   sudo systemctl daemon-reload && sudo systemctl enable --now llama-server
 #
 # worked example (RTX 5090 32GB): Qwen3.6-27B Q6_K at 64K context loads to
-# ~26GB of 32GB VRAM. size yours the same way: model file size + KV cache
+# ~24GB of 32GB VRAM with the q8_0 KV cache below (measured live: 21.3GB
+# weights + 2.9GB KV/buffers). size yours the same way: model file + KV cache
 # (grows with --ctx-size) + ~1GB margin, checked against nvidia-smi.
 #
 # two flags that bite:
