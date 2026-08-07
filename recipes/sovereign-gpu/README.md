@@ -65,6 +65,8 @@ wire the brief to a cron: `hermes cron add` with your schedule (mine fires 08:00
 
 this pattern has run my unattended overnight training jobs for weeks: the agent is drained at 23:00, trains all night, and is back serving before the morning brief fires.
 
+before trusting a new job to it, preview the plan with `./drain-restore.sh --dry-run <command...>`: it prints the exact stop/run/restore sequence and the log path, then exits without touching anything. no sudo call, no service stop, no log write, so it is safe on a box where the sudoers rule is not installed yet. useful for eyeballing a cron line before its first overnight run.
+
 ## part 5: the security posture
 
 - **long-polling means zero inbound ports.** the gateway polls out to your messaging platform; nothing connects in. no reverse proxy and no port forwarding, so there is nothing exposed to keep patched. resist the urge to "improve" this.
