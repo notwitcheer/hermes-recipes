@@ -1,0 +1,1259 @@
+# Hermes Wingtips
+
+collected as-shipped posts from @witcheer. one tested Hermes Agent tip per entry.
+source: https://notwitcheer.github.io/hermes-recipes/wingtips/
+fetched from X via fxtwitter 2026-09-07. original posts keep the cards.
+
+---
+
+## Hermes Wingtips #65: `hermes sessions import`
+
+posted: 2026-09-07
+url: https://x.com/witcheer/status/2096849498173530284
+
+Hermes Wingtips #65: `hermes sessions import`
+
+if you have a conversation going in Claude Code or Codex CLI, you can carry it on in Hermes Agent.
+
+say you spent an hour with another coding agent on a feature, and now you want Hermes to take the next step with all of that context. instead of explaining it again from scratch, you bring the conversation over.
+
+`hermes sessions import`
+
+it lists the sessions it finds on your machine, newest first. pick one and it becomes a Hermes session you can resume like any other.
+
+what comes across is the conversation itself: your messages, the answers, and a short note wherever a tool ran. your other agent's files are only read, never changed.
+
+this is different from `hermes import-agent`, which moves your setup (instructions, skills). this one moves the chat.
+
+---
+
+## Hermes Wingtips #64: `AGENTS.override.md`
+
+posted: 2026-09-06
+url: https://x.com/witcheer/status/2096481734388858931
+
+Hermes Wingtips #64: `AGENTS.override.md`
+
+when you open Hermes Agent inside a project, it reads the project's AGENTS.md on every turn. that file is where a team keeps its rules: how the code is laid out, what to never touch, which commands to run.
+
+but what if you want your own rules in that project? 
+
+maybe you prefer shorter answers, or you want the agent to always run the tests before it reports back. editing the shared AGENTS.md pushes your habits onto everyone else.
+
+this file is the way round it. put an `AGENTS.override.md` next to the team's AGENTS.md and Hermes loads yours instead of theirs. the tracked file stays exactly as your teammates wrote it.
+
+`touch AGENTS.override.md`
+
+add it to .gitignore and it never leaves your machine. it works in any folder that has an AGENTS.md, including subfolders the agent walks into during a session.
+
+---
+
+## Hermes Wingtips #63: `compression.context_timeout_seconds`
+
+posted: 2026-09-05
+url: https://x.com/witcheer/status/2096128698147557524
+
+Hermes Wingtips #63: `compression.context_timeout_seconds`
+
+when a chat gets long, Hermes summarises the older messages to free up room. a separate model writes that summary in the background while your conversation keeps going.
+
+but what if that summary model hangs? without a guard, your whole session would sit there waiting on it.
+
+this setting is that guard. if the summary model goes quiet for 120 seconds, Hermes stops waiting: it tries one backup model, and if that fails too it skips the summary, keeps all your messages and tells you.
+
+`hermes config set compression.context_timeout_seconds <seconds>`
+
+the guard only counts silence. a model that is slow but still writing gets all the time it needs. raise the number if your summary model runs on slower hardware, or set 0 to switch the guard off.
+
+---
+
+## Hermes Wingtips #62: cron.model
+
+posted: 2026-09-04
+url: https://x.com/witcheer/status/2095722000907923465
+
+Hermes Wingtips #62: cron.model
+
+your scheduled jobs and your chat sessions do not have to share a model. without a cron setting, a new job runs on your global default, the same model you chat with, even when the task is a small daily digest.
+
+two ways to route cron spend:
+
+(1) `hermes config set cron.model \<model\>`
+
+a fleet default: every job without its own pin runs on this model.
+
+(2) `hermes cron edit \<job_id\> --model \<model\> --provider \<provider\>`
+
+a per-job pin, for when one heavy scheduled analysis deserves the big model while the rest run cheap.
+
+super useful if you run digests, watchers or reminder jobs 24/7: keep the flagship for conversations and let a smaller model do the routine rounds!
+
+---
+
+## Hermes Wingtips #61: cron preflight
+
+posted: 2026-09-02
+url: https://x.com/witcheer/status/2095028256332271691
+
+Hermes Wingtips #61: cron preflight
+
+before a scheduled job runs, your Hermes Agent checks that the run can actually succeed: the provider key resolves, attached skills have what they need, delivery targets are reachable.
+
+a job that fails the check is marked blocked_config and alerts you once. no model call happens, so it sits at zero cost until you fix it.
+
+the next healthy run clears the state on its own.
+
+---
+
+## Hermes Wingtips #60: /bg vs /btw
+
+posted: 2026-09-01
+url: https://x.com/witcheer/status/2094664430814400740
+
+Hermes Wingtips #60: /bg vs /btw
+
+(1) /bg hands a prompt to a separate session:
+
+your Hermes Agent works on it in the background while your conversation stays free, and the result comes back when it is done.
+
+(2) /btw is for a side question about the conversation you are already in:
+
+it answers from a snapshot, so the task that is currently running never stops.
+
+they also both work on messaging platforms, not only in the terminal.
+
+---
+
+## Hermes Wingtips #59: a rate limit doesn't have to stop your session
+
+posted: 2026-08-31
+url: https://x.com/witcheer/status/2094362454390129137
+
+Hermes Wingtips #59: a rate limit doesn't have to stop your session
+
+Hermes Agent can carry a fallback chain: backup provider:model pairs it switches to automatically when your main model hits a rate limit, a server error or an auth failure.
+
+~ hermes fallback
+
+opens the same picker as hermes model. add as many backups as you want, they are tried in order.
+
+history, tool calls and context all carry over, the agent continues from where it stopped. and it's per turn, your next message starts back on your primary.
+
+one last tips: pin a local model last and no provider outage can fully stop you!
+
+---
+
+## Hermes Wingtips #58: real profile browsing
+
+posted: 2026-08-30
+url: https://x.com/witcheer/status/2093944377085219321
+
+Hermes Wingtips #58: real profile browsing
+
+it shipped in Hermes Agent this week, and the same questions keep coming back. the two big ones:
+
+(1) "so the agent can see all my browser logins?"
+
+it never touches your real browser. it browses a separate copy that you can revoke and delete any time. you stay in control the whole time.
+
+(2) "does it work fully local, with a local model?"
+
+yes. with any backend and any model, fully local setups included.
+
+with this new tool, your agent can easily book flights, check orders, pull invoices and way more!
+
+---
+
+## Hermes Wingtips #57: `delegate_task`
+
+posted: 2026-08-29
+url: https://x.com/witcheer/status/2093591294740168760
+
+Hermes Wingtips #57: `delegate_task`
+
+if you keep wiring up multi-agent teams by hand: several profiles, shared folders, a coordinator that ends up doing all the work itself. the built-in `delegate_task` tool is that whole pattern in one command.
+
+workers start with zero knowledge of your conversation. put everything they need in the brief itself (paths, constraints, what done looks like), and give the coordinator the briefs, not the workers' tools.
+
+that's also the perfect command for running workers on a cheaper model.
+
+great for parallel research, code review, comparing approaches, anything you would split across a team!
+
+---
+
+## Hermes Wingtips #56: switching models from anywhere
+
+posted: 2026-08-27
+url: https://x.com/witcheer/status/2092941623961190832
+
+Hermes Wingtips #56: switching models from anywhere
+
+`hermes model` opens an interactive picker, so it refuses to run through a pipe, a script, or another agent's terminal tool.
+
+the fix is that you never needed the picker. in any chat, on any platform:
+
+/model grok-4 --provider x-ai --global
+
+`--global` persists it to config.yaml and switches the running session in the same move.
+
+`--once` is the sibling: it switches for a single turn and restores the previous model afterward, even on an error.
+
+---
+
+## Hermes Wingtips #55: chaining cron jobs
+
+posted: 2026-08-26
+url: https://x.com/witcheer/status/2092527968140632114
+
+Hermes Wingtips #55: chaining cron jobs
+
+every cron job wakes up in a fresh session. a two-step pipeline, collect then summarize, can't see what step one produced.
+
+`context_from` wires the connection. when you create the second job, point it at the first job's id, and the first job's latest output is prepended to the second job's prompt at fire time.
+
+a job can also point at itself. `continuity` injects the job's own previous output. 
+
+you set all of this by asking your Hermes Agent in plain language, it manages its own cron table.
+
+---
+
+## Hermes Wingtips #54: session, project, profile, bot
+
+posted: 2026-08-25
+url: https://x.com/witcheer/status/2092200934608625728
+
+Hermes Wingtips #54: session, project, profile, bot
+
+the four words everyone meets, and what each one holds:
+
+(1) a session is one conversation. your Hermes Agent keeps many, and every surface can open them.
+
+(2) a project is a workspace: the folders your agent works in, grouped under one name.
+
+(3) a profile is a whole separate agent. its own config, memory, skills, and history.
+
+(4) a bot is a profile with a name and an avatar in the Desktop app. same thing underneath, one click away.
+
+two of these hold your work, two of them are agents.
+
+---
+
+## Hermes Wingtips #53: SOUL.md, AGENTS.md, MEMORY.md, USER.md
+
+posted: 2026-08-24
+url: https://x.com/witcheer/status/2091778310783070649
+
+Hermes Wingtips #53: SOUL.md, AGENTS.md, MEMORY.md, USER.md
+
+four markdown files shape your Hermes Agent. what each one does:
+
+(1) SOUL.md is who your agent is: personality, tone, how it speaks. it exists so your agent stays the same agent everywhere, in every project and on every channel. it lives in ~/.hermes/.
+
+(2) AGENTS.md is how one project works: structure, conventions, the commands that matter. it exists so project rules stay with the project instead of following your agent around. it lives in the project folder, loads only when your agent works there, and you write one per project.
+
+(3) MEMORY.md is what your agent has learned by itself: environment facts, conventions it picked up, lessons from past work. it exists so your agent stops rediscovering the same things every session. your agent writes and maintains it, not you.
+
+(4) USER.md is who you are to your agent: your preferences, your style, how you like your answers. it exists so you never have to introduce yourself twice. your agent maintains this one too.
+
+the rule of thumb: everywhere means SOUL.md, one project means AGENTS.md, and the memory pair takes care of itself.
+
+---
+
+## Hermes Wingtips #52: idle compaction
+
+posted: 2026-08-23
+url: https://x.com/witcheer/status/2091520019318423801
+
+Hermes Wingtips #52: idle compaction
+
+a long-lived thread carries its whole history back into context every time you come back to it, and you pay for that stale backlog on every turn.
+
+your Hermes Agent has a time-based trigger for exactly this:
+
+`hermes config set compression.idle_compact_after_seconds 1800`
+
+the size-based threshold waits for the context to grow big. this one fires on the time gap since your last message. set it in seconds, 1800 = 30 minutes.
+
+super useful if you keep one long Telegram or Discord thread with your agent, or park a session overnight and pick it up in the morning!
+
+---
+
+## Hermes Wingtips #51: checkpoints in one-shot runs
+
+posted: 2026-08-22
+url: https://x.com/witcheer/status/2091175733750124856
+
+Hermes Wingtips #51: checkpoints in one-shot runs
+
+your Hermes Agent snapshots files before it changes them, and that safety net is not limited to interactive sessions. a scripted run gets it too:
+
+(1) hermes chat --checkpoints -q "your task"
+
+the run snapshots each working directory before its first file change, exactly like a live session would. next time you open a session in that folder, /rollback lists those snapshots and can restore from them.
+
+(2) hermes checkpoints status
+
+shows every project the store knows about, with sizes and last touch, from any shell.
+
+---
+
+## Hermes Wingtips #50: the [SILENT] marker
+
+posted: 2026-08-21
+url: https://x.com/witcheer/status/2090697512097112274
+
+Hermes Wingtips #50: the [SILENT] marker
+
+a monitoring job that reports every run trains you to ignore it. your Hermes Agent has a quieter contract: if a cron job's response contains [SILENT], delivery is suppressed and nothing lands in your chat.
+
+the lever is the prompt itself:
+
+"check if nginx is running. if everything is healthy, respond with only [SILENT]. otherwise, report the issue."
+
+great for any check that should only speak up when something is wrong: uptime, disk space, backups, feed watchers!
+
+---
+
+## Hermes Wingtips #49: compaction thresholds
+
+posted: 2026-08-19
+url: https://x.com/witcheer/status/2090030442363670584
+
+Hermes Wingtips #49: compaction thresholds
+
+when your Hermes Agent stops mid-task to summarize, the number in that warning is not random. compaction fires at a fixed fraction of your main model's context window.
+
+the fraction is `compression.threshold` in config.yaml, and it is always read off the model you chat with, never the summarizers' window.
+
+on smaller context windows Hermes waits longer by default, so a compaction cannot fire with half the window still free.
+
+and if you switch between a huge-context model and a small one, `compression.model_thresholds` sets a different trigger per model, matched on the model name.
+
+---
+
+## Hermes Wingtips #48: platform toolsets
+
+posted: 2026-08-18
+url: https://x.com/witcheer/status/2089706892993941840
+
+Hermes Wingtips #48: platform toolsets
+
+your agent pays a fixed token overhead before it reads a single word of your message, and one of the biggest slice is not the prompt.
+
+every tool your platform loads ships its full schema with every call, used or not. 
+
+if a session never touches the browser, image gen or TTS, `platform_toolsets` in config.yaml hands that platform a smaller set.
+
+`hermes prompt-size` shows you the before and after without spending a token.
+
+---
+
+## Hermes Wingtips #47: cron prompts
+
+posted: 2026-08-17
+url: https://x.com/witcheer/status/2089275668949356763
+
+Hermes Wingtips #47: cron prompts
+
+your agent nails a task in chat, you schedule the same thing with /cron, and the scheduled runs come back wrong.
+
+the reason is simple: a cron job runs in a fresh session, with none of the chat context that made the task work. a prompt leaning on what you discussed earlier has nothing to lean on at run time.
+
+so write the prompt like the agent has never met you: every url, every command, every rule spelled out inside the prompt itself.
+
+this is also why a scheduled job cannot ask you clarifying questions, it answers with what the prompt gave it!
+
+---
+
+## Hermes Wingtips #46: Browser Use
+
+posted: 2026-08-14
+url: https://x.com/witcheer/status/2088204444391399722
+
+Hermes Wingtips #46: Browser Use
+
+Browser Use mode is a browser harness from the Browser Use team: instead of driving the page one tool call per click, your agent writes one script that runs the whole flow.
+
+since v2026.8.13 it is on by default. update, and web tasks get cheaper without touching a single config key.
+
+---
+
+## Hermes Wingtips #45: if you ever want to bring an existing OpenClaw setup into Hermes Agent, there is a command for that
+
+posted: 2026-08-13
+url: https://x.com/witcheer/status/2087812081110147134
+
+Hermes Wingtips #45: if you ever want to bring an existing OpenClaw setup into Hermes Agent, there is a command for that.
+
+`hermes claw migrate` imports your settings, memories and skills. you can add `--dry-run` and it only shows you the plan, nothing is touched.
+
+worth knowing: 
+
+(1) API keys and tokens stay behind unless you explicitly pass `--migrate-secrets`
+
+(2) before anything is applied a restore-point zip of your Hermes home is written, so the move itself is undoable.
+
+---
+
+## Hermes Wingtips #44: your skills library has an undo button
+
+posted: 2026-08-12
+url: https://x.com/witcheer/status/2087482141118435477
+
+Hermes Wingtips #44: your skills library has an undo button.
+
+the curator is a background pass that tidies the skills your agent creates for itself: stale ones get archived, overlapping ones get merged.  
+
+worried it might archive a skill you cared about? it snapshots your whole skills folder before every pass, automatically.
+
+`hermes curator rollback --list` shows every snapshot.
+
+`hermes curator rollback` restores the newest one, and even the rollback takes a snapshot first, so you cannot lose anything trying.
+
+---
+
+## Hermes Wingtips #43: Telegram topics or a second agent?
+
+posted: 2026-08-11
+url: https://x.com/witcheer/status/2087071761040896227
+
+Hermes Wingtips #43: Telegram topics or a second agent?
+
+running several projects through one Telegram bot? there are two ways to split them, and they are not the same thing.
+
+(1) /topic
+
+parallel conversations inside one bot DM. still one agent behind them, so what it learns on one project helps the others.
+
+(2) hermes profile create \<name\>
+
+a second agent entirely, with its own bot.
+
+pick topics when your projects should feed one brain, profiles when you need real walls between them. and both can run on the same machine!
+
+---
+
+## Hermes Wingtips #42: the compaction-summary model
+
+posted: 2026-08-10
+url: https://x.com/witcheer/status/2086745372521591061
+
+Hermes Wingtips #42: the compaction-summary model
+
+every time your context compacts, a model reads the whole transcript and writes the summary. by default that model is your main chat model. 
+
+if you run a frontier model, you are paying frontier price for housekeeping, and the pause you feel at every compaction is frontier latency too.
+
+you can move that job to a fast, cheap model. below, the switch on my own agent:
+
+---
+
+## Hermes Wingtips #41: approvals suggest
+
+posted: 2026-08-09
+url: https://x.com/witcheer/status/2086460177046286778
+
+Hermes Wingtips #41: approvals suggest
+
+approving the same command for the third time this week? your Hermes Agent already keeps that history. 
+
+`hermes approvals suggest` mines your past approvals and turns the recurring ones into an allowlist proposal, so the prompts you always say yes to stop coming back. 
+
+it proposes, you pick, nothing is written on its own.
+
+below, a real run on my own agent this morning.
+
+---
+
+## Hermes Wingtips #40: give your local agent two commands, not root
+
+posted: 2026-08-07
+url: https://x.com/witcheer/status/2085640740353233270
+
+Hermes Wingtips #40: give your local agent two commands, not root
+
+when I'm running benchmarks, my local Hermes Agent stops and starts the model server on its own, from cron, with no password. it still cannot touch anything else as root.
+
+the trick is a sudoers rule scoped to exactly one service: NOPASSWD applies to systemctl start and stop for that unit, nothing more.
+
+still test the fence from the outside: sudo -n on any other service should still ask for a password.
+
+---
+
+## Hermes Wingtips #39: the missing provider prefix
+
+posted: 2026-08-06
+url: https://x.com/witcheer/status/2085293767506931833
+
+Hermes Wingtips #39: the missing provider prefix
+
+if a model id ever answers you with a 404 error, check the id before you check your keys. 
+
+providers know their models as `vendor/model`, and an id that lost its prefix (`nemotron-3-ultra-550b-a55b` instead of `nvidia/nemotron-3-ultra-550b-a55b`) returns a 404, so it reads like an outage.
+
+a fix just merged for the next release: the error now names the model and suggests the prefixed id. 
+
+until then, the habit to keep in mind: `vendor/model`, always, and `hermes model` picks it correctly for you.
+
+---
+
+## Hermes Wingtips #38: hermes doctor
+
+posted: 2026-08-02
+url: https://x.com/witcheer/status/2084002559644336176
+
+Hermes Wingtips #38: hermes doctor
+
+your Hermes Agent ships with its own health check. one command reads your whole setup and prints a pass/fail report:
+
+- security advisories and a MCP server audit
+- python environment and version consistency
+- config files, deprecated keys and
+
+---
+
+## Hermes Wingtips #37: hermes project
+
+posted: 2026-08-01
+url: https://x.com/witcheer/status/2083587946574389358
+
+Hermes Wingtips #37: hermes project
+
+real work rarely fits in one folder: an api repo, a web repo, an infra repo, all one product. a project gives that group one name.
+
+(1) `hermes project create "My App" ~/code/api ~/code/web` creates one 
+
+(2) `hermes project add-folder` grows it
+
+(3) `hermes project use` sets it as active
+
+what is super cool is that the Desktop app groups your sessions by project automatically, and binding a kanban board with `bind-board` gives every task a deterministic worktree and branch convention.
+
+---
+
+## Hermes Wingtips #36: hermes import-agent
+
+posted: 2026-08-01
+url: https://x.com/witcheer/status/2083360088593776765
+
+Hermes Wingtips #36: hermes import-agent
+
+if you already run Claude Code or Codex CLI, your setup can move over to Hermes Agent in one command:
+
+`hermes import-agent`
+
+it auto-detects `~/.claude` or `~/.codex` and maps everything to its Hermes equivalent: 
+
+global instructions become memories, skills come across as skills, MCP servers goes in your config, and Claude's permission rules become the command allowlist. API keys and credentials are never touched.
+
+it always shows you the full plan before writing anything, and `--dry-run` previews without touching disk at all.
+
+there is no need rebuilding the setup you already tuned!
+
+---
+
+## Hermes Wingtips #35: hermes bundles
+
+posted: 2026-07-30
+url: https://x.com/witcheer/status/2082882457339322828
+
+Hermes Wingtips #35: hermes bundles
+
+if you keep loading the same skills together for the same kind of job, group them under one command:
+
+`hermes bundles create <name> --skill <a> --skill <b>`
+
+typing /<name> in the CLI or any chat platform then loads every skill in the bundle at once. 
+
+a bundle is a tiny yaml file under ~/.hermes/skill-bundles/, so you can check it into a dotfiles repo and share a whole task profile with your team.
+
+super cool for recurring jobs and tasks you perform every day, see below for a quick example :)
+
+---
+
+## Hermes Wingtips #34: hermes proxy
+
+posted: 2026-07-29
+url: https://x.com/witcheer/status/2082613966774350301
+
+Hermes Wingtips #34: hermes proxy  
+
+your Nous Portal subscription can serve any other app that speaks the OpenAI API.  
+
+`hermes proxy start` runs a small local pass-through server. point the app at the address it prints, give it any placeholder API key and a model from your plan, and it will works. 
+
+in order to double check that the Portal login is ready, type `hermes proxy status`.  
+
+it serves the raw model, not your agent: if you want the whole agent (tools, memory, skills) behind an API, that is `hermes serve`.  
+
+this tips is for people using Open WebUI, Karakeep, or anything self-hosted that asks for an OpenAI key you did not want to buy!
+
+---
+
+## Hermes Wingtips #33: checkpoints
+
+posted: 2026-07-28
+url: https://x.com/witcheer/status/2082169101913604120
+
+Hermes Wingtips #33: checkpoints
+
+checkpoints snapshot your project before Hermes Agent writes, patches or runs a destructive command, and `/rollback` puts things back.
+
+(1) `hermes chat --checkpoints`
+
+you can turns them on for one session, or keep them on with `checkpoints: enabled: true` in config.yaml.
+
+(2) `/rollback`
+
+lists every snapshot; `/rollback diff <N>` previews the change and `/rollback <N> <file>` restores a single file. everything lives under `~/.hermes/checkpoints/`.
+
+turning this on is great before a big refactor, before letting an agent loose on an unfamiliar repo, or before trying yolo mode!
+
+as an example, here is a live recovery on my own box:
+
+---
+
+## Hermes Wingtips #32: hermes insights
+
+posted: 2026-07-27
+url: https://x.com/witcheer/status/2081822725325435386
+
+Hermes Wingtips #32: hermes insights
+
+this command reads your local session database and prints the last 30 days: 
+
+- input and output tokens
+- which models did the work
+- which platforms your sessions came from
+- your top tools by call count...
+
+`--days` moves the window and `--source` narrows to one platform.  
+
+this is a useful command when you are deciding which model to demote, or when you just want to know which tool your agent leans on most!
+
+as an example, here is one of my Hermes Agent:
+
+---
+
+## Hermes Wingtips #31: see what every message costs before you send it
+
+posted: 2026-07-26
+url: https://x.com/witcheer/status/2081381590488568218
+
+Hermes Wingtips #31: see what every message costs before you send it
+
+`hermes prompt-size`
+
+it prints the fixed budget of a fresh session: the full system prompt, the skills index, your MEMORY.md and USER.md snapshots, the prompt tiers, and the JSON schemas for every enabled tool.
+
+if you want to manage it:
+
+- `hermes tools` turns off toolsets you never use 
+- `hermes skills` uninstalls what you don't need
+- AGENTS.md in your working directory count towards the total too
+
+---
+
+## Hermes Wingtips #30: back up your agent before you need to
+
+posted: 2026-07-25
+url: https://x.com/witcheer/status/2081051573254549904
+
+Hermes Wingtips #30: back up your agent before you need to
+
+(1) `hermes backup` 
+
+it writes `~/hermes-backup-<timestamp>.zip` with config.yaml, .env, auth, memories, skills, sessions, cron and profiles. it copies the databases through SQLite's own backup API, so you can run it while Hermes is live.
+
+(2) `hermes import ~/hermes-backup-<timestamp>.zip` puts it all back.
+
+for a fast one, you can use `hermes backup --quick`, which targets critical state only: config.yaml, state.db, .env, auth and cron jobs.
+
+`hermes backup` is super useful if you are moving to a new box, if you want to duplicate your agent or before doing any experiment!
+
+---
+
+## Hermes Wingtips #29: local models context floor
+
+posted: 2026-07-24
+url: https://x.com/witcheer/status/2080682763594899763
+
+Hermes Wingtips #29: local models context floor
+
+you point Hermes Agent at Ollama, the first few turns are fine, then the agent starts forgetting instructions or repeating work. 
+
+the usual cause is that Ollama's default context depends on your VRAM, and under 24 GB it is 4,096 tokens. Hermes needs at least 64,000 for agent work, because the system prompt and tool schemas alone take 4k to 8k, and most servers drop your oldest messages once the window fills.
+
+here is what to do server-side:
+
+(1) Ollama: `OLLAMA_CONTEXT_LENGTH=64000 ollama serve`, then check the CONTEXT column in ollama ps
+
+(2) vLLM: `--max-model-len 64000`
+
+(3) llama.cpp: `llama-server -m model.gguf -c 64000`
+
+LM Studio users can skip this since Hermes asks it to load the model at 64K by default.
+
+---
+
+## Hermes Wingtips #28: cron jobs & workdir
+
+posted: 2026-07-23
+url: https://x.com/witcheer/status/2080346485745676561
+
+Hermes Wingtips #28: cron jobs & workdir
+
+a cron job runs in a completely fresh session, detached from any repo: no AGENTS.md is loaded, and the terminal and file tools start from wherever the gateway happens to be running.
+
+the fix is one flag:
+
+(1) `hermes cron create "every 1d at 09:00" "audit open PRs, summarise CI health" --workdir /home/me/projects/acme`
+
+(2) or from the chat directly, just tell Hermes which directory the job should run in (the cronjob tool takes workdir= the same way)
+
+with workdir set, the job loads AGENTS.md from that directory and every file tool runs inside it. the path must be absolute and exist, or the create is rejected.
+
+---
+
+## Hermes Wingtips #27: /background
+
+posted: 2026-07-22
+url: https://x.com/witcheer/status/2079951218101891530
+
+Hermes Wingtips #27: /background
+
+you do not have to wait while your agent grinds through a long task. 
+
+`/background <prompt>` spawns a completely separate agent session that runs in parallel: your chat stays fully interactive, and the result comes back as a panel in your terminal when it finishes.  
+
+(1) as an example: `/background analyse the logs in /var/log and summarise today's errors`. 
+
+you can run several at once, and the status bar shows how many are in flight.  
+
+(2) one thing to know: the background agent starts clean, with no knowledge of your conversation. 
+
+it only gets the prompt you give it, so write it self-contained.  it inherits your model, provider and toolsets, so no setup needed.
+
+---
+
+## Hermes Wingtips #26: every web page your agent reads costs a main-model call
+
+posted: 2026-07-21
+url: https://x.com/witcheer/status/2079595063534145708
+
+Hermes Wingtips #26: every web page your agent reads costs a main-model call 
+
+web_extract is the tool Hermes agent uses to read web pages. by default the summariser that processes long pages reuses your main chat model. 
+
+it means that on every docs page, article, thread... the agent opens burns a full-price call to whatever model you're chatting with. 
+
+(1) route the summariser to a cheap model:
+
+```
+auxiliary:
+  web_extract:
+    provider: nous
+    model: google/gemini-3-flash-preview
+```
+or pick it interactively: hermes model → configure auxiliary models → web_extract.  
+
+(2) if you need raw unsummarised content later, use browser_navigate & browser_snapshot instead. 
+
+the browser tool returns a live page without auxiliary-model rewriting.
+
+---
+
+## Hermes Wingtips #25: /goal
+
+posted: 2026-07-20
+url: https://x.com/witcheer/status/2079194854513324093
+
+Hermes Wingtips #25: /goal 
+
+/goal keeps working until a judge model calls it done, so a vague goal gets a vague judging. fix it by telling the judge what done means:
+
+(1) let Hermes write it: 
+
+exemple: /goal draft migrate the auth service to JWT
+
+(2) or spell it inline under
+
+---
+
+## Hermes Wingtips #24: gateway sessions do not auto-reset by default
+
+posted: 2026-07-18
+url: https://x.com/witcheer/status/2078481963040530769
+
+Hermes Wingtips #24: gateway sessions do not auto-reset by default.
+
+the default is `session_reset: mode: none`, so a Telegram or Discord chat keeps its history across restarts until you say otherwise. if you want a clean slate on a schedule, opt in:
+
+(1) `idle` resets after `idle_minutes` of quiet (default 1440, so 24h)
+
+(2) `daily` resets once a day at `at_hour` (default 4, local time)
+
+(3)  `both` resets on whichever comes first
+
+before any auto-reset it saves memories and skills first.
+
+---
+
+## Hermes Wingtips #23: pointed Hermes at your own model and it prints the tool call instead of running it?
+
+posted: 2026-07-17
+url: https://x.com/witcheer/status/2078094918740758606
+
+Hermes Wingtips #23: pointed Hermes at your own model and it prints the tool call instead of running it?
+
+if the reply comes back as raw json like {"name": "web_search", ...}, your inference server handed the tool call over as text and Hermes never got to run it.
+
+tool calling has to be switched on at the server, and it is off until you set it:
+
+(1) vLLM: add --enable-auto-tool-choice --tool-call-parser hermes
+
+(2) SGLang: add --tool-call-parser qwen (or your model's parser)
+
+(3) llama.cpp: add --jinja
+
+---
+
+## Hermes Wingtips #22: steer a task without stopping it
+
+posted: 2026-07-16
+url: https://x.com/witcheer/status/2077799836804407715
+
+Hermes Wingtips #22: steer a task without stopping it
+
+a lot of people think you have to stop the agent and start over to change direction mid-task. you don't. there is /steer.
+
+while it works, send a mid-run note: 
+
+`/steer focus on the auth module first`
+
+it arrives after the current tool call finishes, so nothing gets interrupted and it is not a new turn, just fresh direction the agent picks up as it goes.
+
+two siblings worth knowing: 
+
+(1) /queue (alias /q) holds a prompt for the next turn without touching the current one
+
+(2) /busy lets you set what plain Enter does while it works: queue, steer, or interrupt.
+
+---
+
+## Hermes Wingtips #21: credential pools
+
+posted: 2026-07-15
+url: https://x.com/witcheer/status/2077409888045510954
+
+Hermes Wingtips #21: credential pools
+
+a credential pool is several keys or logins for one provider. Hermes picks a healthy key, and when that key is rate-limited or out of quota it rotates to the next one. 
+
+(this is different from fallback providers. a fallback jumps to a different provider, and only after every key in the pool is exhausted).
+
+(1) add a second key (OpenRouter example): 
+
+`hermes auth add openrouter --api-key sk-or-...-key`
+
+(2) check the pool: `hermes auth list`
+
+when Hermes does rotate, the new key has no cached prefix for your chat, so the next request re-reads the full history.  
+
+lastly, if you are on Nous Portal with a single OAuth login, you usually do not need a pool. this tip is for multi-key API setups.
+
+---
+
+## Hermes Wingtips #20: how to use export
+
+posted: 2026-07-14
+url: https://x.com/witcheer/status/2077015914361336050
+
+Hermes Wingtips #20: how to use export
+
+Hermes sessions export is one command for every format. pick with --format:
+
+(1) md or qmd for a readable archive (one file per session and a manifest under `~/.hermes/session-exports`)
+
+(2) html for a self-contained page you can open and share
+
+add `--redact` when anything leaves the box: it hides API keys, tokens and credentials from the write.
+
+for one particular session: `--session-id <id>`.
+
+---
+
+## Hermes Wingtips #19: it remembered, it just can't see it yet
+
+posted: 2026-07-13
+url: https://x.com/witcheer/status/2076670836891689174
+
+Hermes Wingtips #19: it remembered, it just can't see it yet.
+
+we snapshot MEMORY.md and USER.md once at session start so the LLM prefix cache stays warm. 
+
+a mid-session save hits disk immediately, and only lands in the system prompt on the next session.
+
+you need the new fact in play now?
+
+(1) start a fresh session
+(2) or hermes -c on the next turn
+
+tool responses already show the live write.
+
+---
+
+## Hermes Wingtips #18: keep auto-learning, review the writes
+
+posted: 2026-07-10
+url: https://x.com/witcheer/status/2075562193320292426
+
+Hermes Wingtips #18: keep auto-learning, review the writes
+
+if you want Hermes to keep learning without changing memory or skills unchecked, turn on both approval gates:
+
+~ `/memory approval on`  
+~ `/skills approval on`
+
+new writes wait for your yes instead of landing immediately.
+
+---
+
+## Hermes Wingtips #17: check the built-in tools before you install a skill
+
+posted: 2026-07-09
+url: https://x.com/witcheer/status/2075236387914166408
+
+Hermes Wingtips #17: check the built-in tools before you install a skill
+
+a lot of popular third-party skills overlap with what Hermes ships by default.
+
+five that people overlook: memory, web search, browser control, cron, and sub-agents. 
+
+all are native tools with no install :)
+
+---
+
+## Hermes Wingtips #16: gateway won't restart after a reboot? enable lingering
+
+posted: 2026-07-08
+url: https://x.com/witcheer/status/2074942527996838105
+
+Hermes Wingtips #16: gateway won't restart after a reboot? enable lingering
+
+a user-service gateway runs under your login, so it stops at logout and won't come back after a reboot until you enable lingering.
+
+headless VPS, zero root per restart:
+
+```
+hermes gateway install
+sudo loginctl enable-linger $USER
+```
+
+or go boot-level: `sudo hermes gateway install --system`
+
+---
+
+## Hermes Wingtips #15: a compaction rewrites your history into a working brief
+
+posted: 2026-07-07
+url: https://x.com/witcheer/status/2074478482327806232
+
+Hermes Wingtips #15: a compaction rewrites your history into a working brief
+
+when a long session reaches the compaction point, Hermes doesn't drop the middle turns, it rewrites them into a structured brief with fixed slots: 
+
+goal / constraints / progress / key decisions / relevant files / next steps / critical context. 
+
+that brief carries the working state forward, and the raw turns stay in state.db where session_search can still reach them.
+
+so a compaction is your agent re-reading its own notes, not losing the thread.
+
+(1) work in the brief's shape: state goals and decisions in plain words, so they map straight into the slots that get kept
+
+(2) for anything that must never drop, put it in MEMORY.md, which reloads on every session no matter how many compactions happen
+
+---
+
+## Hermes Wingtips #14: switching models resets your prompt cache
+
+posted: 2026-07-06
+url: https://x.com/witcheer/status/2074153526222114974
+
+Hermes Wingtips #14: switching models resets your prompt cache
+
+switch models mid-conversation and the next turn re-reads the whole thing at full input price. the cache key includes the model, so a new model means a cold cache. occasional switches are fine, frequent ones in a long session multiply your cost.
+
+- batch your switches instead of ping-ponging mid-thread
+
+- on a long session, start a fresh one or delegate (subagents get their own context) rather than switching back and forth
+
+---
+
+## Hermes Wingtips #13: keep your Hermes session db lean
+
+posted: 2026-07-05
+url: https://x.com/witcheer/status/2073728504869396765
+
+Hermes Wingtips #13: keep your Hermes session db lean
+
+your Hermes agent keeps every session in one SQLite db at ~/.hermes/state.db, and we ship auto-prune off by default, so none of your history disappears: it all stays searchable.
+
+we keep it lean: hundreds of sessions sit in
+
+---
+
+## Hermes Wingtips #12: kanban's default worker workspace is scratch
+
+posted: 2026-07-03
+url: https://x.com/witcheer/status/2073051003482456511
+
+Hermes Wingtips #12: kanban's default worker workspace is scratch
+
+you're handing a kanban task to a Hermes agent and want to keep the files it writes? one thing to know before you run it.
+
+by default each kanban worker runs in a scratch workspace, and Hermes clears that workspace the moment the task completes. indeed, throwaway chores should not leave directories behind.
+
+to keep the output, give the task its own workspace when you create it:
+
+```
+hermes kanban create "your task" --workspace dir:/absolute/path
+```
+
+two things to get right:
+
+(1) name the workspace with dir: for anything you want to survive the run. no flag means scratch, cleared on completion.
+
+(2) make the path absolute. Hermes accepts a relative path at create with no error, then rejects it when the worker spawns.
+
+---
+
+## Hermes Wingtips #11: toolsets: all doesn't include the kanban tools
+
+posted: 2026-07-02
+url: https://x.com/witcheer/status/2072698059788562587
+
+Hermes Wingtips #11: toolsets: all doesn't include the kanban tools
+
+you want a Hermes agent to manage your kanban board for you, creating and moving tasks itself? it needs the kanban tools.
+
+here is what you need to understand:
+
+you give that agent's profile toolsets: [all] in ~/.hermes/config.yaml, figuring "all" covers everything, and the agent still turns up with no kanban tools at all.
+
+the reason is that the kanban toolset is opt-in. all loads the everyday tools, but a few specialist ones (kanban is one) are left out on purpose, so a normal chat is not cluttered with board commands it will never use. you have to ask for kanban by name.
+
+the fix is to add it to that profile's toolsets, spelled out:
+
+```
+toolsets:
+- kanban
+```
+
+you need to do this only when you set up an agent to drive the board. the workers the board spawns on its own to run a task already get the tools automatically. this is just for the driver.
+
+---
+
+## Hermes Wingtips #10: every fallback entry needs both provider and model
+
+posted: 2026-07-01
+url: https://x.com/witcheer/status/2072321716626366479
+
+Hermes Wingtips #10: every fallback entry needs both provider and model
+
+your fallback_providers list in ~/.hermes/config.yaml counts an entry as a real fallback only when it carries a provider field and a model field. 
+
+two things worth setting:
+
+(1) write provider and model on every entry in the chain, top to bottom.
+
+(2) put a local model last as your floor for a cloud outage, pointing provider: custom at your own llama.cpp or vLLM endpoint.
+
+---
+
+## Hermes Wingtips #9: a profile is a whole separate agent, not a setting
+
+posted: 2026-06-30
+url: https://x.com/witcheer/status/2071924626561638757
+
+Hermes Wingtips #9: a profile is a whole separate agent, not a setting
+
+a Hermes profile is a second agent in its own right: its own memory, sessions, skills and bot token. spin one up and it knows nothing your main agent does. 
+
+two things to understand:
+
+(1) you want one agent across Telegram, Discord and WhatsApp? that's a single profile with several gateways: they share one SOUL.md and one memory, so it behaves as one agent everywhere. 
+
+vice versa, a profile per platform splits it into strangers.
+
+(2) you want a fresh agent that starts from your current one? hermes profile create new --clone-all. without it the new profile is blank.
+
+---
+
+## Hermes Wingtips #8: MoA
+
+posted: 2026-06-27
+url: https://x.com/witcheer/status/2070888011508674819
+
+Hermes Wingtips #8: MoA
+
+the new Mixture of Agents virtual model fans every turn out to four reference models plus an aggregator. 
+
+I put it on a fresh Hermes box: gpt-5.5, deepseek-v4-pro and sonnet-4.6 as references, opus-4.8 as the aggregator.
+
+measured on the box: 
+
+- a single opus call ran 27.9k tokens for ~$0.14
+- the full MoA turn ran 28.6k tokens for ~$0.15, the same within a cent
+
+the system prompt and tool schemas dominate that number, and the references run on stripped context, so the four extra calls stay cheap. 
+for one question, you get the whole ensemble for barely more than a single model.
+
+and the quality is the point: Nous's HermesBench puts an opus + gpt-5.5 MoA at 0.8202 vs 0.7607 / 0.7412 for those models alone. 
+
+it is 5 calls a turn, so it scales with task length, which is exactly why Nous frames it for "genuinely difficult problems" and on that ground it's one of the better-value things they've shipped.
+
+---
+
+## Hermes Wingtips #7: Hermes Agent drives your Mac in the background now, clicking and typing while your real cu
+
+posted: 2026-06-26
+url: https://x.com/witcheer/status/2070594190656815137
+
+Hermes Wingtips #7
+
+Hermes Agent drives your Mac in the background now, clicking and typing while your real cursor never moves. 
+
+simple setup: 
+
+- hermes computer-use install
+- grant Screen Recording & Accessibility to CuaDriver 
+- then hermes -t computer_use chat. 
+
+any destructive actions wait for approval, we're keeping it safe.
+
+---
+
+## Hermes Wingtips #6: if your Hermes box fills its disk, it's likely not the logs
+
+posted: 2026-06-25
+url: https://x.com/witcheer/status/2070141757707239594
+
+Hermes Wingtips #6: if your Hermes box fills its disk, it's likely not the logs. 
+
+the unbounded growers are state-snapshots (750MB on mine), per-run cron output (1,500+ files), and stdout if your host pipes it to a file. 
+
+run the disk-cleanup plugin and watch those three before the "no space left" crash.
+
+---
+
+## Hermes Wingtips #5: /learn
+
+posted: 2026-06-24
+url: https://x.com/witcheer/status/2069828190197973337
+
+Hermes Wingtips #5: /learn 
+
+it turns a source into a reusable skill in one command. 
+
+four ways to feed it: a local code/docs folder, a doc url, a workflow you just ran, or pasted notes. reach for it once you've done something non-trivial and don't want to re-explain it next time.
+
+the skill lands in ~/.hermes/skills/ and auto-loads only when a task calls for it, so it's procedural memory that doesn't bloat every prompt. 
+
+I used it today and it drafted a genuinely good skill, even pulling in a real adjacent feature I hadn't mentioned.
+
+~~~
+what you need to know: it currently ignores its own <=60-char description rule (mine came out 123 and 202 chars). 
+
+since a skill's description loads every session, a 200-char one is dead weight. open the SKILL.md, tighten it, fix the author, before you rely on it or share it.
+
+---
+
+## Hermes Wingtips #4: which file is your agent's brain
+
+posted: 2026-06-23
+url: https://x.com/witcheer/status/2069385776756895880
+
+Hermes Wingtips #4: which file is your agent's brain
+
+~ SOUL.md is who the agent is: slot #1 in the system prompt, it replaces the default identity. 
+
+~ USER.md is who you are. 
+
+~ MEMORY.md is the facts it keeps about your work. 
+
+~ AGENTS.md is your project's rules, found by walking the directory.
+
+~~~
+what you need to understand is that project rule files are first-match-wins. 
+Hermes loads only one of .hermes.md, AGENTS.md, CLAUDE.md, .cursorrules, in that order. 
+
+a .hermes.md in the repo shadows your AGENTS.md with no warning, and the rules you wrote never load.
+
+SOUL.md is exempt, it always loads on its own from ~/.hermes/SOUL.md. 
+
+if Hermes is ignoring your project instructions, check for a higher-priority file next to them. and it caps every one of these at 20,000 characters, then truncates the rest.
+
+---
+
+## Hermes Wingtips #3: your agent didn't forget, its memory is a frozen snapshot
+
+posted: 2026-06-22
+url: https://x.com/witcheer/status/2069020659829608570
+
+Hermes Wingtips #3: your agent didn't forget, its memory is a frozen snapshot.
+
+tell it something, it saves to MEMORY.md, the write hits disk right away. 
+but the curated memory block in the system prompt loads once at session start and stays fixed for the whole session.
+
+this is on purpose, to keep the prefix cache warm.
+
+so mid-session it can act like it "forgot" what it just saved. 
+it didn't: tool calls still read the live on-disk value, only the injected block is frozen. it refreshes next session.
+
+if you need it acting on a fresh memory right now, start a new session. the save already landed, it just shows up next time.
+
+---
+
+## Hermes Wingtips #2: the 🗜️ icon, what context compression keeps and what it drops
+
+posted: 2026-06-19
+url: https://x.com/witcheer/status/2068027535955468533
+
+Hermes Wingtips #2
+
+the 🗜️ icon, what context compression keeps and what it drops
+
+this little emojy is the compression count: how many times Hermes auto-summarised the session to stay under the context limit, which kicks in around 50% full. 
+
+when compression occurs, it keeps your first 3 turns and your last 20, and summarises everything in between. 
+a detail from the middle of a long session can then drop out, and the agent repeats work it already did, even though the opening goal and the recent turns are intact.
+
+~~~
+three levers when it bites, all in config.yaml, hot-reloading on a running gateway: 
+
+- protect_last_n keeps more recent turns uncompressed 
+
+- auxiliary.compression.model points the summariser at a cheap fast model so it does not burn main-model tokens
+
+- model.context_length raises the ceiling so it fires later.
+
+https://hermes-agent.nousresearch.com/docs/developer-guide/context-compression-and-caching
+
+---
+
+## Hermes Wingtips #1: running a hermes agent in a telegram group and it just sits there silent?
+
+posted: 2026-06-18
+url: https://x.com/witcheer/status/2067717599090143569
+
+Hermes Wingtips #1
+
+running a hermes agent in a telegram group and it just sits there silent? 
+the usual cause is BotFather's group privacy mode: it's on by default, so the bot only sees messages that mention it or start with /. 
+
+plain group messages never reach it.
+
+easy fix: message BotFather, /setprivacy, pick the bot, Disable.
+
+it doesn't apply to groups the bot is already in. remove it from the group and re-add it for the change to take.

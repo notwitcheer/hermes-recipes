@@ -18,9 +18,13 @@ every command in a recipe ran on real hardware before publishing. no copy-paste 
 - [Hermes Agent on a cheap VPS](recipes/cheap-vps/README.md): the secure-box hardening script, the install one-liner, driving it over tmux, the systemd setup that survives a reboot
 - [lock down a self-hosted Hermes Agent](recipes/secure-hermes/README.md): what the gateway, dashboard, and API server expose, secret hygiene, backup/restore, least-privilege scoping, an exposure-audit script
 
+## Hermes Wingtips
+
+the daily tip series, collected: [Hermes Wingtips](wingtips/index.md) (65 tips, newest first). point an agent at [llms.txt](llms.txt).
+
 ## also here
 
-- [threads & cards](threads.md): the Wingtips tips, heads-up cards, and builder spotlights, collected in one place
+- [threads & cards](threads.md): Flightplan, heads-up cards, community pulse, builder spotlights
 - [changelog](changelog.md): what shipped in Hermes Agent and how to use it, in my words
 
 found a problem with a recipe? open an issue. I fix what I ship.

@@ -1,24 +1,18 @@
 # threads & cards
 
-the shorter Hermes Agent writing, collected so it stops scattering across the timeline. recipes are the long-form, tested walkthroughs; these are the tips, the heads-up cards for new features, and the spotlights on what other builders ship.
+the shorter Hermes Agent writing, collected so it stops scattering across the timeline. recipes are the long-form, tested walkthroughs. Wingtips now have [their own page](wingtips/index.md).
 
 ## Hermes Flightplan
 
 the recipe companions: the mental model a setup assumes, before the commands.
 
 - [#1: your first Hermes Agent, start to finish](https://x.com/witcheer/status/2069075880912027687)
+- [#2: an always-on agent on Hermes Cloud](https://x.com/witcheer/status/2076345051198984637)
+- [#3: The Hermes Agent FAQ](https://x.com/witcheer/status/2094481834939748611)
 
 ## Hermes Wingtips
 
-one tested tip a day: the feature, and the thing that bit me.
-
-- [`/setprivacy` and BotFather](https://x.com/witcheer/status/2067717599090143569)
-- [compression](https://x.com/witcheer/status/2068027535955468533)
-- [frozen memory](https://x.com/witcheer/status/2069020659829608570)
-- [rule-file precedence](https://x.com/witcheer/status/2069385776756895880)
-- [`/learn`: read what it wrote, the generated SKILL.md frontmatter is unreliable](https://x.com/witcheer/status/2069828190197973337)
-- [disk fills up, it is not the logs](https://x.com/witcheer/status/2070141757707239594)
-- [computer-use: turn it on, and the install gotcha](https://x.com/witcheer/status/2070594190656815137)
+moved: [the full series, #1 to #65, as-shipped text](wingtips/index.md). for agents: [llms.txt](llms.txt).
 
 ## heads-up cards
 

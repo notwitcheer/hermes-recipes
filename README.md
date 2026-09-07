@@ -9,6 +9,7 @@ Hermes Agent is Nous Research's open-source agent: autonomous skill creation, pe
 ## how this repo works
 
 - `recipes/` has one folder per walkthrough: the exact configs and scripts I used, plus a readme with the commands and what they produced
+- `docs/wingtips/` is the Hermes Wingtips series collected (as-shipped X text, newest first). `docs/llms.txt` is the same series as one file for agents
 - `CHANGELOG.md` tracks what shipped in Hermes Agent and how to use it, in plain words
 - if a step has not been tested on real hardware, it does not ship here
 
@@ -24,5 +25,9 @@ live:
 coming next:
 - extending Hermes Agent with a custom mcp server (TypeScript)
 - persistent memory and fts5 recall in practice
+
+## Hermes Wingtips
+
+the daily tip series, collected on the site: [Hermes Wingtips](https://notwitcheer.github.io/hermes-recipes/wingtips/). for agents: [llms.txt](https://notwitcheer.github.io/hermes-recipes/llms.txt).
 
 watch the repo for new recipes. found a problem with one? open an issue, I fix what I ship.
