@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-65 tips, #1 to #65. newest first. each page is the as-shipped X text from 2026-09-07. cards stay on the original posts.
+65 tips, #1 to #65. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 

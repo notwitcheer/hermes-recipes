@@ -4,7 +4,7 @@ what shipped in Hermes Agent and how to use it, in my words. updated when a loop
 
 ## 2026-09-07
 
-- Hermes Wingtips collected: [the series, #1 to #65](wingtips/index.md), as-shipped X text, newest first. [llms.txt](llms.txt) is the same file for agents. cards stay on the original posts. built from the live posts on 2026-09-07.
+- Hermes Wingtips collected: [the series, #1 to #65](wingtips/index.md), as-shipped X text, newest first. [llms.txt](llms.txt) is the same file for agents. cards stay on the original posts. `make wingtips` rebuilds both from `docs/wingtips/*.md` so the two urls stay current.
 
 ## 2026-07-09
 

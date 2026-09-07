@@ -2,7 +2,7 @@
 
 collected as-shipped posts from @witcheer. one tested Hermes Agent tip per entry.
 source: https://notwitcheer.github.io/hermes-recipes/wingtips/
-fetched from X via fxtwitter 2026-09-07. original posts keep the cards.
+original posts keep the cards. this file is rebuilt from docs/wingtips/ on each new tip.
 
 ---
 

@@ -9,7 +9,7 @@ Hermes Agent is Nous Research's open-source agent: autonomous skill creation, pe
 ## how this repo works
 
 - `recipes/` has one folder per walkthrough: the exact configs and scripts I used, plus a readme with the commands and what they produced
-- `docs/wingtips/` is the Hermes Wingtips series collected (as-shipped X text, newest first). `docs/llms.txt` is the same series as one file for agents
+- `docs/wingtips/` is the Hermes Wingtips series collected (as-shipped X text, newest first). `docs/llms.txt` is the same series as one file for agents. `make wingtips` rebuilds both after a new tip lands.
 - `CHANGELOG.md` tracks what shipped in Hermes Agent and how to use it, in plain words
 - if a step has not been tested on real hardware, it does not ship here
 
