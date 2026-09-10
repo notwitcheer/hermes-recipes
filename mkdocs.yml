@@ -42,5 +42,6 @@ nav:
       - lock it down: recipes/secure-hermes/README.md
       - your own agent on one GPU: recipes/sovereign-gpu/README.md
   - Hermes Wingtips: wingtips/index.md
+  - release explainers: explainers/index.md
   - threads & cards: threads.md
   - changelog: changelog.md

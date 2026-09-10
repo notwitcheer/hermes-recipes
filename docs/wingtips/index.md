@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-66 tips, #1 to #66. newest first. each page is the as-shipped X text. cards stay on the original posts.
+68 tips, #1 to #68. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,8 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#68: /skill-name](68-skill-name.md) · 2026-09-10 · [on X](https://x.com/witcheer/status/2097944804084556003)
+- [#67: hermes debug share](67-hermes-debug-share.md) · 2026-09-09 · [on X](https://x.com/witcheer/status/2097565476435992883)
 - [#66: sessions.auto_prune](66-sessions-auto-prune.md) · 2026-09-08 · [on X](https://x.com/witcheer/status/2097201422844436642)
 - [#65: `hermes sessions import`](65-hermes-sessions-import.md) · 2026-09-07 · [on X](https://x.com/witcheer/status/2096849498173530284)
 - [#64: `AGENTS.override.md`](64-agents-override-md.md) · 2026-09-06 · [on X](https://x.com/witcheer/status/2096481734388858931)
