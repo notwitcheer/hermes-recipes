@@ -17,10 +17,12 @@ every command in a recipe ran on real hardware before publishing. no copy-paste 
 - [24/7 Hermes Agent on a Mac Mini M4](recipes/mac-mini-24-7/README.md): the launchd gotcha and watchdog, the `[SILENT]` cron pattern, a git-synced workspace, the human-in-the-loop approval rule
 - [Hermes Agent on a cheap VPS](recipes/cheap-vps/README.md): the secure-box hardening script, the install one-liner, driving it over tmux, the systemd setup that survives a reboot
 - [lock down a self-hosted Hermes Agent](recipes/secure-hermes/README.md): what the gateway, dashboard, and API server expose, secret hygiene, backup/restore, least-privilege scoping, an exposure-audit script
+- [your own agent on one GPU](recipes/sovereign-gpu/README.md): llama-server and the gateway as boot-persistent systemd units, the identity templates, the starter skill pack, the drain/restore pattern, zero inbound ports
+- [your own agent on one GPU](recipes/sovereign-gpu/README.md): llama-server and the gateway as boot-persistent systemd units, the SOUL/USER/MEMORY identity templates, a starter skill pack, the drain/restore pattern for borrowing the GPU back, zero inbound ports
 
 ## Hermes Wingtips
 
-the daily tip series, collected: [Hermes Wingtips](wingtips/index.md) (68 tips, newest first). point an agent at [llms.txt](llms.txt).
+the daily tip series, collected: [Hermes Wingtips](wingtips/index.md) (69 tips, newest first). point an agent at [llms.txt](llms.txt).
 
 ## release explainers
 
@@ -31,4 +33,4 @@ what each Hermes Agent release actually does and how to use it, written after th
 - [threads & cards](threads.md): Flightplan, heads-up cards, community pulse, builder spotlights
 - [changelog](changelog.md): what shipped in Hermes Agent and how to use it, in my words
 
-found a problem with a recipe? open an issue. I fix what I ship.
+found a problem with a recipe? [open an issue](https://github.com/notwitcheer/hermes-recipes/issues). I fix what I ship.
