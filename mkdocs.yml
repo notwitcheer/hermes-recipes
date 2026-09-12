@@ -43,5 +43,6 @@ nav:
       - your own agent on one GPU: recipes/sovereign-gpu/README.md
   - Hermes Wingtips: wingtips/index.md
   - release explainers: explainers/index.md
+  - Hermes Autopilot prompts: prompts/index.md
   - threads & cards: threads.md
   - changelog: changelog.md

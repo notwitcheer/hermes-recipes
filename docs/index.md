@@ -22,11 +22,15 @@ every command in a recipe ran on real hardware before publishing. no copy-paste 
 
 ## Hermes Wingtips
 
-the daily tip series, collected: [Hermes Wingtips](wingtips/index.md) (69 tips, newest first). point an agent at [llms.txt](llms.txt).
+the daily tip series, collected: [Hermes Wingtips](wingtips/index.md) (70 tips, newest first). point an agent at [llms.txt](llms.txt).
 
 ## release explainers
 
 what each Hermes Agent release actually does and how to use it, written after the real questions come in: [release explainers](explainers/index.md) (7 so far, newest first).
+
+## Hermes Autopilot
+
+copy-pasteable prompts to hand your agent, each run on a real box before posting: [Hermes Autopilot prompts](prompts/index.md) (3 so far, newest first).
 
 ## also here
 
