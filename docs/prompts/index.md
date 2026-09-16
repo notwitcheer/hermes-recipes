@@ -6,6 +6,7 @@ each page is the prompt as posted. newest first.
 
 ## the series
 
+- [#5: write the AGENTS.md for this repo](05-agents-md.md) · 2026-09-16 · [on X](https://x.com/witcheer/status/2100223649026314532)
 - [#4: the Monday review that writes itself](04-monday-review.md) · 2026-09-14 · [on X](https://x.com/witcheer/status/2099485722545648017)
 - [#3: audit my own setup](03-audit-my-setup.md) · 2026-09-12 · [on X](https://x.com/witcheer/status/2098769643599020208)
 - [#2: turn what you just did into a skill](02-session-to-skill.md) · 2026-09-10 · [on X](https://x.com/witcheer/status/2098058859189277008)
