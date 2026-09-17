@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-74 tips, #1 to #74. newest first. each page is the as-shipped X text. cards stay on the original posts.
+75 tips, #1 to #75. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,7 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#75: reasoning_effort for side tasks, how hard each background call thinks](75-aux-reasoning-effort.md) · 2026-09-17 · [on X](https://x.com/witcheer/status/2100460797239415168)
 - [#74: provider_routing, pick which host serves your model on OpenRouter](74-provider-routing.md) · 2026-09-16 · [on X](https://x.com/witcheer/status/2100156876209963106)
 - [#73: gateway.message_timestamps, show the model when you wrote](73-message-timestamps.md) · 2026-09-15 · [on X](https://x.com/witcheer/status/2099784645529276481)
 - [#72: `skills.create_dir`, where new skills land](72-skills-create-dir.md) · 2026-09-14 · [on X](https://x.com/witcheer/status/2099370347153805667)
