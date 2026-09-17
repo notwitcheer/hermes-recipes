@@ -6,6 +6,8 @@ each page is the as-shipped X text. newest first. the first two entries ran as H
 
 ## the series
 
+- [#9: the plugin catalog](09-the-plugin-catalog.md) · 2026-09-17 · [on X](https://x.com/witcheer/status/2100532064550302181)
+- [#8: Hermes Business, what a team actually gets](08-hermes-business.md) · 2026-09-15 · [on X](https://x.com/witcheer/status/2099840448118309278)
 - [#7: Hermes on Omarchy](07-hermes-on-omarchy.md) · 2026-09-09 · [on X](https://x.com/witcheer/status/2097677043412369747)
 - [#6: web search with no key at all](06-web-search-with-no-key-at-all.md) · 2026-09-07 · [on X](https://x.com/witcheer/status/2096902241777004650)
 - [#5: bot-to-bot messaging](05-bot-to-bot-messaging.md) · 2026-09-05 · [on X](https://x.com/witcheer/status/2096174013332561939)
