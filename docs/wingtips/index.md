@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-76 tips, #1 to #76. newest first. each page is the as-shipped X text. cards stay on the original posts.
+77 tips, #1 to #77. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,7 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#77: display.bell_on_complete + bell_on_prompt, a bell when Hermes finishes or needs you](77-bell-keys.md) · 2026-09-19 · [on X](https://x.com/witcheer/status/2101229280185270718)
 - [#76: display.vim_mode, vi keys in the Hermes CLI input box](76-vim-mode.md) · 2026-09-18 · [on X](https://x.com/witcheer/status/2100853054970990803)
 - [#75: reasoning_effort for side tasks, how hard each background call thinks](75-aux-reasoning-effort.md) · 2026-09-17 · [on X](https://x.com/witcheer/status/2100460797239415168)
 - [#74: provider_routing, pick which host serves your model on OpenRouter](74-provider-routing.md) · 2026-09-16 · [on X](https://x.com/witcheer/status/2100156876209963106)
