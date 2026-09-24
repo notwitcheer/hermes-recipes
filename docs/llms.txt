@@ -6,6 +6,62 @@ original posts keep the cards. this file is rebuilt from docs/wingtips/ on each 
 
 ---
 
+## Hermes Wingtips #82: agent.session_stall_timeout, the stall notice explained
+
+posted: 2026-09-24
+url: https://x.com/witcheer/status/2102997146660110386
+
+if your Hermes bot has ever sent "Agent session appears stalled", that is a watchdog, and it never stops the turn.
+
+it speaks up once when you have sent a follow-up and the agent has shown no activity for 5 minutes. then it is your call: /new, /stop, or keep waiting.
+
+raise the number for long jobs, or set 0 to turn it off.
+
+docs: [https://hermes-agent.nousresearch.com/docs/user-guide/configuration#session-stall-watchdog](https://hermes-agent.nousresearch.com/docs/user-guide/configuration#session-stall-watchdog)
+
+---
+
+## Hermes Wingtips #81: unauthorized_dm_behavior, what your bot says to someone you have not approved
+
+posted: 2026-09-23
+url: https://x.com/witcheer/status/2102680195161366668
+
+when someone you have not approved messages your Hermes bot, it answers with a one-time pairing code, so you can let them in from the CLI.
+
+new in Hermes Agent: if the bot is only for you, it can say no instead.
+
+`unauthorized_dm_behavior: decline`
+
+one short, polite decline, then silence toward that sender for a day.
+
+docs: [https://hermes-agent.nousresearch.com/docs/user-guide/configuration#unauthorized-dm-behavior](https://hermes-agent.nousresearch.com/docs/user-guide/configuration#unauthorized-dm-behavior)
+
+---
+
+## Hermes Wingtips #80: skills.auto_load, the skills you want in every session, pinned
+
+posted: 2026-09-22
+url: https://x.com/witcheer/status/2102275176138178793
+
+Hermes Agent loads a skill when a task calls for it. some skills you want in every session whatever the task: a house style, a review checklist, the way you write commits.
+
+new in Hermes Agent (v0.21.4 and newer): this key pins them. every name on the list is fully loaded at the start of every new session, on the CLI, on every gateway platform, in cron jobs.
+
+```yaml
+skills:
+  auto_load:
+    - my-workflow
+    - github-pr-workflow
+```
+
+resolved once, when the prompt is first built, so the prompt stays cache-stable. an edit to the skill shows up in the next session.
+
+`hermes -s <skill>` does the same for one launch. per profile, empty by default.
+
+docs: [https://hermes-agent.nousresearch.com/docs/user-guide/configuration#auto-loading-skills-every-session](https://hermes-agent.nousresearch.com/docs/user-guide/configuration#auto-loading-skills-every-session)
+
+---
+
 ## Hermes Wingtips #79: agent.disabled_toolsets, one list that turns a toolset off on every platform
 
 posted: 2026-09-21
