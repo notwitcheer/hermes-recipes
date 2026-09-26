@@ -6,6 +6,36 @@ original posts keep the cards. this file is rebuilt from docs/wingtips/ on each 
 
 ---
 
+## Hermes Wingtips #84: mcp.discovery_concurrency, how many MCP servers connect at once
+
+posted: 2026-09-26
+url: https://x.com/witcheer/status/2103850251220042077
+
+new in Hermes Agent: a cap on how many MCP servers connect at the same time.
+
+the servers in your config connect when your Hermes Agent starts, and each local one runs as its own process.
+
+raise it to bring a long list of servers up sooner, or lower it on a small machine.
+
+docs: [https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp#discovery-time](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp#discovery-time)
+
+---
+
+## Hermes Wingtips #83: approvals.denial_breaker_threshold, the smart-approval denial breaker
+
+posted: 2026-09-25
+url: https://x.com/witcheer/status/2103395194963980527
+
+when the smart-approval reviewer denies a command, Hermes Agent can try a variation of it.
+
+this key counts those denials in a row, per session. at 3, the deny message tells the agent to stop, report what was blocked, and ask you to run it yourself or /approve it.
+
+lower it to stop sooner, or set 0 to turn it off.
+
+docs: [https://hermes-agent.nousresearch.com/docs/user-guide/configuration#denial-circuit-breaker](https://hermes-agent.nousresearch.com/docs/user-guide/configuration#denial-circuit-breaker)
+
+---
+
 ## Hermes Wingtips #82: agent.session_stall_timeout, the stall notice explained
 
 posted: 2026-09-24
