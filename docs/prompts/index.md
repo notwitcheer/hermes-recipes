@@ -6,6 +6,8 @@ each page is the prompt as posted. newest first.
 
 ## the series
 
+- [#9: your agent writes its own manual](09-my-hermes-manual.md) · 2026-09-26 · [on X](https://x.com/witcheer/status/2103764777621147741)
+- [#8: your agent audits the files that shape it](08-files-that-shape-it.md) · 2026-09-23 · [on X](https://x.com/witcheer/status/2102713441316168048)
 - [#7: a skills inventory your agent writes for you](07-skills-inventory.md) · 2026-09-21 · [on X](https://x.com/witcheer/status/2102053116178825319)
 - [#6: a daily brief on the topics you name](06-daily-brief.md) · 2026-09-18 · [on X](https://x.com/witcheer/status/2100954266038829170)
 - [#5: write the AGENTS.md for this repo](05-agents-md.md) · 2026-09-16 · [on X](https://x.com/witcheer/status/2100223649026314532)
