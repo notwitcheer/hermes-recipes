@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-84 tips, #1 to #84. newest first. each page is the as-shipped X text. cards stay on the original posts.
+85 tips, #1 to #85. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,7 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#85: hermes pause, stop your agent starting new work](85-hermes-pause.md) · 2026-09-27 · [on X](https://x.com/witcheer/status/2104227606614757460)
 - [#84: mcp.discovery_concurrency, how many MCP servers connect at once](84-mcp-discovery-concurrency.md) · 2026-09-26 · [on X](https://x.com/witcheer/status/2103850251220042077)
 - [#83: approvals.denial_breaker_threshold, the smart-approval denial breaker](83-denial-breaker-threshold.md) · 2026-09-25 · [on X](https://x.com/witcheer/status/2103395194963980527)
 - [#82: agent.session_stall_timeout, the stall notice explained](82-session-stall-timeout.md) · 2026-09-24 · [on X](https://x.com/witcheer/status/2102997146660110386)
