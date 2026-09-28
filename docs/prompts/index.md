@@ -6,6 +6,7 @@ each page is the prompt as posted. newest first.
 
 ## the series
 
+- [#10: a docs to-do list from your open pull requests](10-docs-todo.md) · 2026-09-28 · [on X](https://x.com/witcheer/status/2104472788874699238)
 - [#9: your agent writes its own manual](09-my-hermes-manual.md) · 2026-09-26 · [on X](https://x.com/witcheer/status/2103764777621147741)
 - [#8: your agent audits the files that shape it](08-files-that-shape-it.md) · 2026-09-23 · [on X](https://x.com/witcheer/status/2102713441316168048)
 - [#7: a skills inventory your agent writes for you](07-skills-inventory.md) · 2026-09-21 · [on X](https://x.com/witcheer/status/2102053116178825319)
