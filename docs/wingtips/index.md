@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-86 tips, #1 to #86. newest first. each page is the as-shipped X text. cards stay on the original posts.
+88 tips, #1 to #88. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,8 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#88: /context, see what fills your model's context window, by category, with the free space left](88-context.md) · 2026-10-01 · [on X](https://x.com/witcheer/status/2105552884670550343)
+- [#87: /handoff, move a live terminal chat to your phone's messaging app with its full history](87-handoff.md) · 2026-09-30 · [on X](https://x.com/witcheer/status/2105222388530946090)
 - [#86: hermes send, message your chats from any script](86-hermes-send.md) · 2026-09-28 · [on X](https://x.com/witcheer/status/2104531742686093765)
 - [#85: hermes pause, stop your agent starting new work](85-hermes-pause.md) · 2026-09-27 · [on X](https://x.com/witcheer/status/2104227606614757460)
 - [#84: mcp.discovery_concurrency, how many MCP servers connect at once](84-mcp-discovery-concurrency.md) · 2026-09-26 · [on X](https://x.com/witcheer/status/2103850251220042077)
