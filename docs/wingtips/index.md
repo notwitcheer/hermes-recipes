@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-91 tips, #1 to #91. newest first. each page is the as-shipped X text. cards stay on the original posts.
+92 tips, #1 to #92. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,7 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#92: Nous Portal in one command](92-setup-portal.md) · 2026-10-05 · [on X](https://x.com/witcheer/status/2106998344337731926)
 - [#91: files in your Telegram chat, ask for a PDF and it arrives as an attachment](91-files-in-telegram.md) · 2026-10-04 · [on X](https://x.com/witcheer/status/2106632278839337357)
 - [#90: /blueprint, a ready-made automation scheduled as a cron job, no cron syntax](90-blueprint.md) · 2026-10-03 · [on X](https://x.com/witcheer/status/2106275419557126419)
 - [#89: /branch, copy the conversation into a new session and try another direction, the original kept](89-branch.md) · 2026-10-02 · [on X](https://x.com/witcheer/status/2105922267636965538)
