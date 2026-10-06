@@ -6,6 +6,7 @@ each page is the prompt as posted. newest first.
 
 ## the series
 
+- [#16: a morning briefing in your Telegram, built from your day](16-start-here.md) · 2026-10-06 · [on X](https://x.com/witcheer/status/2107428133108699344)
 - [#14: what you told it twice that it still has not saved](14-memory-gaps.md) · 2026-10-04 · [on X](https://x.com/witcheer/status/2106670365330100573)
 - [#12: the things you said you would do, from your past chats](12-open-loops.md) · 2026-10-02 · [on X](https://x.com/witcheer/status/2105953850200928555)
 - [#11: a reply drafted from the page in front of you](11-reply-draft.md) · 2026-09-30 · [on X](https://x.com/witcheer/status/2105271120681394676)
