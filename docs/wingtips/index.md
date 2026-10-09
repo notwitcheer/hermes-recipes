@@ -2,7 +2,7 @@
 
 one tested Hermes Agent tip at a time, collected so you can read the series in one place and point an agent at it.
 
-94 tips, #1 to #94. newest first. each page is the as-shipped X text. cards stay on the original posts.
+96 tips, #1 to #96. newest first. each page is the as-shipped X text. cards stay on the original posts.
 
 for agents: [llms.txt](../llms.txt) is the same series as one file.
 
@@ -10,6 +10,8 @@ the running X search (latest-first, needs X): [from:witcheer "Hermes Wingtips"](
 
 ## the series
 
+- [#96: take back your last message](96-take-back-your-last-message.md) · 2026-10-09 · [on X](https://x.com/witcheer/status/2108518464134484398)
+- [#95: let your agent keep checking for you](95-let-your-agent-keep-checking.md) · 2026-10-08 · [on X](https://x.com/witcheer/status/2108082465923649911)
 - [#94: attach a file to your message](94-attach-a-file.md) · 2026-10-07 · [on X](https://x.com/witcheer/status/2107731405987856566)
 - [#93: let your Hermes Agent install its own skills](93-install-its-own-skills.md) · 2026-10-06 · [on X](https://x.com/witcheer/status/2107371954009247994)
 - [#92: Nous Portal in one command](92-setup-portal.md) · 2026-10-05 · [on X](https://x.com/witcheer/status/2106998344337731926)
