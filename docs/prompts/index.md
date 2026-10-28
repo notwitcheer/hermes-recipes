@@ -6,6 +6,7 @@ each page is the prompt as posted. newest first.
 
 ## the series
 
+- [#26: birthday heads-ups with a gift idea](26-birthday-heads-up.md) · 2026-10-28 · [on X](https://x.com/witcheer/status/2115488771479417220)
 - [#25: a weekly digest of the place you follow](25-weekly-digest.md) · 2026-10-26 · [on X](https://x.com/witcheer/status/2114718702616662175)
 - [#24: a reminder that keeps coming back until it's done](24-reminder-until-done.md) · 2026-10-23 · [on X](https://x.com/witcheer/status/2113616441555537961)
 - [#23: watch a price for you](23-price-watch.md) · 2026-10-21 · [on X](https://x.com/witcheer/status/2112891660388467064)
