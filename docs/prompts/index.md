@@ -6,6 +6,9 @@ each page is the prompt as posted. newest first.
 
 ## the series
 
+- [#30: is this text real? check it without opening the link](30-scam-text-check.md) · 2026-11-03 · [on X](https://x.com/witcheer/status/2117590866999296166)
+- [#29: what to delete to get space back](29-free-up-list.md) · 2026-11-02 · [on X](https://x.com/witcheer/status/2117231247302836582)
+- [#28: one trip sheet from your booking emails](28-trip-sheet.md) · 2026-11-01 · [on X](https://x.com/witcheer/status/2116969522968334434)
 - [#27: follow up on what you promised at an event](27-after-event.md) · 2026-10-31 · [on X](https://x.com/witcheer/status/2116602101342109784)
 - [#26: birthday heads-ups with a gift idea](26-birthday-heads-up.md) · 2026-10-28 · [on X](https://x.com/witcheer/status/2115488771479417220)
 - [#25: a weekly digest of the place you follow](25-weekly-digest.md) · 2026-10-26 · [on X](https://x.com/witcheer/status/2114718702616662175)
