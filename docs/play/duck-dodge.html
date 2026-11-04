@@ -1,0 +1,112 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Duck Dodge</title>
+<style>
+html,body{margin:0;height:100%;background:#1b1f3a;overflow:hidden;touch-action:manipulation;-webkit-user-select:none;user-select:none;font-family:system-ui,sans-serif}
+canvas{display:block;width:100vw;height:100vh}
+</style></head><body>
+<canvas id="c"></canvas>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');
+let W,H,dpr;
+function resize(){dpr=window.devicePixelRatio||1;W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)}
+addEventListener('resize',resize);resize();
+
+let state='start',duck,gpus,score,best=0,t,spawn,speed,stars=[];
+for(let i=0;i<40;i++)stars.push([Math.random(),Math.random(),Math.random()*1.5+.5]);
+
+function reset(){
+  duck={x:W/2,tx:W/2,y:H-90,s:44};
+  gpus=[];score=0;t=0;spawn=0;speed=170;state='play';
+}
+function tap(e){
+  e.preventDefault();
+  const px=(e.touches?e.touches[0].clientX:e.clientX);
+  if(state!=='play'){reset();return}
+  const step=W/4;
+  duck.tx=Math.max(duck.s/2,Math.min(W-duck.s/2,duck.tx+(px<W/2?-step:step)));
+}
+c.addEventListener('touchstart',tap,{passive:false});
+c.addEventListener('mousedown',tap);
+addEventListener('keydown',e=>{
+  if(state!=='play'){reset();return}
+  if(e.key==='ArrowLeft')duck.tx=Math.max(22,duck.tx-W/4);
+  if(e.key==='ArrowRight')duck.tx=Math.min(W-22,duck.tx+W/4);
+});
+
+function drawDuck(d,tm){
+  const s=d.s,bob=Math.sin(tm*8)*1.5;
+  x.save();x.translate(d.x,d.y+bob);
+  x.fillStyle='#ffd23f';
+  x.beginPath();x.ellipse(0,6,22,16,0,0,7);x.fill();
+  x.beginPath();x.arc(10,-12,12,0,7);x.fill();
+  x.fillStyle='#f0b400';x.beginPath();x.ellipse(-4,8,11,7,-.4,0,7);x.fill();
+  x.fillStyle='#ff8a1f';x.beginPath();x.moveTo(20,-13);x.lineTo(32,-9);x.lineTo(20,-6);x.closePath();x.fill();
+  x.fillStyle='#111';x.beginPath();x.arc(13,-15,2.2,0,7);x.fill();
+  x.restore();
+}
+function drawGpu(g){
+  x.save();x.translate(g.x,g.y);x.rotate(g.r);
+  const w=g.w,h=g.w*.55;
+  x.fillStyle='#2b2f3a';x.fillRect(-w/2,-h/2,w,h);
+  x.fillStyle='#76b900';x.fillRect(-w/2,-h/2,w,5);
+  x.fillStyle='#111';
+  for(const fx of[-w/4,w/4]){x.beginPath();x.arc(fx,2,h*.32,0,7);x.fill();
+    x.strokeStyle='#888';x.lineWidth=1.5;x.beginPath();
+    for(let i=0;i<4;i++){const a=i*Math.PI/2+g.r*3;x.moveTo(fx,2);x.lineTo(fx+Math.cos(a)*h*.3,2+Math.sin(a)*h*.3)}
+    x.stroke()}
+  x.fillStyle='#d4af37';x.fillRect(-w/2+4,h/2,w-8,4);
+  x.restore();
+}
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  x.fillStyle='#1b1f3a';x.fillRect(0,0,W,H);
+  x.fillStyle='#fff';
+  for(const s of stars){x.globalAlpha=.4+.3*Math.sin(now/600+s[0]*9);x.fillRect(s[0]*W,s[1]*H,s[2],s[2])}
+  x.globalAlpha=1;
+  x.fillStyle='#2e7d5b';x.fillRect(0,H-60,W,60);
+  x.fillStyle='#3a9b72';x.fillRect(0,H-60,W,6);
+
+  if(state==='play'){
+    t+=dt;score+=dt*10;speed=170+t*8;
+    spawn-=dt;
+    if(spawn<=0){
+      spawn=Math.max(.35,.9-t*.01);
+      const lane=Math.floor(Math.random()*5);
+      gpus.push({x:W*(lane+.5)/5+(Math.random()-.5)*20,y:-40,w:52+Math.random()*20,v:speed*(.8+Math.random()*.5),r:(Math.random()-.5)*.6,vr:(Math.random()-.5)*2});
+    }
+    duck.x+=(duck.tx-duck.x)*Math.min(1,dt*14);
+    for(const g of gpus){
+      g.y+=g.v*dt;g.r+=g.vr*dt;
+      if(Math.abs(g.x-duck.x)<g.w/2+8 && Math.abs(g.y-(duck.y))<g.w*.275+16){
+        state='over';if(score>best){best=Math.floor(score)}
+        navigator.vibrate&&navigator.vibrate(120);
+      }
+    }
+    gpus=gpus.filter(g=>g.y<H+60);
+  }
+  gpus&&gpus.forEach(drawGpu);
+  if(duck)drawDuck(duck,now/1000);
+
+  x.textAlign='center';x.fillStyle='#fff';
+  if(state==='play'){
+    x.font='bold 28px system-ui';x.fillText(Math.floor(score),W/2,50);
+    x.globalAlpha=.25;x.font='36px system-ui';x.fillText('◀',40,H/2);x.fillText('▶',W-40,H/2);x.globalAlpha=1;
+  }else{
+    x.fillStyle='rgba(10,12,30,.7)';x.fillRect(0,0,W,H);
+    x.fillStyle='#fff';x.font='bold 44px system-ui';
+    x.fillText(state==='start'?'Duck Dodge':'Splat!',W/2,H/2-60);
+    drawDuck({x:W/2-6,y:H/2+10,s:44},now/1000);
+    x.font='20px system-ui';
+    if(state==='over')x.fillText('Score '+Math.floor(score)+'  ·  Best '+best,W/2,H/2+70);
+    else x.fillText('Dodge the falling GPUs',W/2,H/2+70);
+    x.fillText('Tap left or right to move',W/2,H/2+100);
+    x.fillStyle='#ffd23f';x.font='bold 22px system-ui';
+    x.fillText(state==='start'?'Tap to start':'Tap to retry',W/2,H/2+150);
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script></body></html>
