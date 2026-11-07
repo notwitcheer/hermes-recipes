@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Paper Maze</title>
+<style>
+  :root{--ink:#1d1b19;--paper:#fbf8f1;--accent:#e4572e}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:#efe9dc;color:var(--ink);
+    font-family:"Marker Felt","Comic Sans MS","Chalkboard SE",system-ui,sans-serif;
+    touch-action:manipulation;user-select:none;-webkit-user-select:none;overflow:hidden}
+  .wrap{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:10px}
+  header{display:flex;width:min(94vw,520px);justify-content:space-between;align-items:center}
+  h1{font-size:22px;margin:0}
+  .timer{font-size:22px;font-variant-numeric:tabular-nums;background:var(--paper);border:2px solid var(--ink);
+    border-radius:10px;padding:2px 10px;box-shadow:2px 2px 0 var(--ink)}
+  .board{position:relative;width:min(94vw,520px,58vh);aspect-ratio:1}
+  #c{width:100%;height:100%;display:block;background:var(--paper);border-radius:6px;
+    box-shadow:0 2px 0 #d6cdb8,0 8px 20px rgba(0,0,0,.12)}
+  .pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,64px);gap:8px}
+  .pad button{font:inherit;font-size:28px;border:2.5px solid var(--ink);border-radius:14px;background:var(--paper);
+    color:var(--ink);box-shadow:3px 3px 0 var(--ink);padding:0}
+  .pad button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  #up{grid-column:2}#left{grid-column:1;grid-row:2}#down{grid-column:2;grid-row:2}#right{grid-column:3;grid-row:2}
+  .row{display:flex;gap:10px;align-items:center;font-size:14px}
+  .row button{font:inherit;font-size:14px;border:2px solid var(--ink);border-radius:10px;background:var(--paper);padding:4px 12px}
+  .win{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(251,248,241,.9);border-radius:6px;text-align:center;z-index:20}
+  .win.show{display:flex;animation:pop .35s ease-out}
+  .win h2{font-size:clamp(24px,8vw,34px);margin:0 0 6px}.win p{margin:0 0 14px;font-size:18px}
+  .win button{font:inherit;font-size:18px;border:2.5px solid var(--ink);border-radius:12px;background:var(--accent);
+    color:#fff;padding:8px 18px;box-shadow:3px 3px 0 var(--ink)}
+  @keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+  #confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;background:transparent;z-index:10}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Paper Maze</h1><div class="timer" id="timer">0.0s</div></header>
+  <div class="board">
+    <canvas id="c"></canvas>
+    <div class="win" id="win"><h2>★ You made it! ★</h2><p id="winTime"></p><button id="again">Play again</button></div>
+  </div>
+  <div class="pad">
+    <button id="up" aria-label="up">▲</button>
+    <button id="left" aria-label="left">◀</button>
+    <button id="down" aria-label="down">▼</button>
+    <button id="right" aria-label="right">▶</button>
+  </div>
+  <div class="row"><span id="best">Best: –</span><button id="reset">Restart</button></div>
+</div>
+<canvas id="confetti"></canvas>
+<script>
+// Walls traced from the hand-drawn maze. 10x10 grid.
+// H[r][c]: wall on the top edge of row r (r=0..10). V[c][r]: wall on the left edge of column c (c=0..10).
+const N=10;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return store._m[k]||null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){store._m[k]=v}},_m:{}};
+const HW=[[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[1,3],[1,5],[1,6],[2,1],[2,5],[2,6],[2,7],[3,1],[3,2],[3,4],[3,5],[4,2],[4,3],[4,4],[5,1],[5,2],[5,8],[5,9],[6,0],[6,5],[6,6],[7,4],[7,5],[7,6],[7,7],[7,8],[8,2],[8,3],[8,4],[8,6],[8,7],[8,8],[9,1],[9,2],[9,3],[9,4],[9,9],[10,0],[10,1],[10,2],[10,3],[10,4],[10,5],[10,6],[10,7],[10,8],[10,9]];
+const VW=[[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[1,3],[1,4],[1,7],[1,8],[2,0],[2,1],[2,6],[2,7],[3,1],[3,2],[3,5],[3,6],[4,1],[4,2],[4,5],[4,6],[5,0],[5,4],[5,7],[5,8],[6,3],[6,4],[6,9],[7,2],[7,3],[7,4],[7,5],[8,0],[8,1],[8,4],[9,1],[9,2],[9,3],[9,6],[10,0],[10,1],[10,2],[10,3],[10,4],[10,5],[10,6],[10,7],[10,8]];
+const hS=new Set(HW.map(a=>a+'')), vS=new Set(VW.map(a=>a+''));
+// The top-left 2x2 corner is the "outside" notch where S and the player stand.
+const START={r:0,c:1}, EXIT={r:9,c:9};
+const inNotch=(r,c)=>r<2&&c<2;
+function canMove(r,c,dr,dc){
+  const nr=r+dr,nc=c+dc;
+  if(r===EXIT.r&&c===EXIT.c&&dc===1) return 'win';
+  if(nr<0||nc<0||nr>=N||nc>=N) return false;
+  if(dr===-1) return !hS.has(r+','+c);
+  if(dr===1)  return !hS.has((r+1)+','+c);
+  if(dc===-1) return !vS.has(c+','+r);
+  if(dc===1)  return !vS.has((c+1)+','+r);
+}
+
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+let S=0,pad=0,cell=0;
+function size(){
+  const b=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;
+  cv.width=b.width*d;cv.height=b.height*d;S=cv.width;pad=S*0.075;cell=(S-2*pad)/N;draw();
+}
+// seeded wobble so the lines look hand-drawn but stay put
+function rnd(seed){let x=Math.sin(seed*999.7)*43758.5453;return x-Math.floor(x)}
+function inkLine(x1,y1,x2,y2,seed){
+  const j=cell*0.04, w=cell*0.11;
+  ctx.lineWidth=w;ctx.lineCap='round';ctx.strokeStyle='#1d1b19';
+  ctx.beginPath();ctx.moveTo(x1+(rnd(seed)-.5)*j,y1+(rnd(seed+1)-.5)*j);
+  const mx=(x1+x2)/2+(rnd(seed+2)-.5)*j*1.5,my=(y1+y2)/2+(rnd(seed+3)-.5)*j*1.5;
+  ctx.quadraticCurveTo(mx,my,x2+(rnd(seed+4)-.5)*j,y2+(rnd(seed+5)-.5)*j);ctx.stroke();
+}
+const X=c=>pad+c*cell, Y=r=>pad+r*cell;
+function drawPlayer(cx,cy,s){
+  ctx.save();ctx.translate(cx,cy);ctx.strokeStyle='#1d1b19';ctx.lineWidth=s*0.07;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(0,-s*0.24,s*0.13,0,Math.PI*2);ctx.fillStyle='#fbf8f1';ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,-s*0.11);ctx.lineTo(0,s*0.12);       // body
+  ctx.moveTo(-s*0.22,-s*0.02);ctx.lineTo(s*0.22,-s*0.02);           // arms
+  ctx.moveTo(0,s*0.12);ctx.lineTo(-s*0.16,s*0.34);                  // legs
+  ctx.moveTo(0,s*0.12);ctx.lineTo(s*0.16,s*0.34);ctx.stroke();ctx.restore();
+}
+function letter(t,r,c){
+  ctx.fillStyle='#1d1b19';ctx.font=`bold ${cell*0.8}px "Marker Felt","Comic Sans MS",sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(t,X(c)+cell/2,Y(r)+cell/2);
+}
+let player={...START}, drawPos={x:START.c,y:START.r}, trail=[];
+function draw(){
+  ctx.clearRect(0,0,S,S);
+  // faint notebook grid
+  ctx.strokeStyle='rgba(80,120,200,.08)';ctx.lineWidth=1;
+  for(let i=0;i<=N;i++){ctx.beginPath();ctx.moveTo(X(i),Y(0));ctx.lineTo(X(i),Y(N));ctx.stroke();
+    ctx.beginPath();ctx.moveTo(X(0),Y(i));ctx.lineTo(X(N),Y(i));ctx.stroke();}
+  // trail
+  ctx.fillStyle='rgba(228,87,46,.18)';
+  trail.forEach(([r,c])=>{ctx.beginPath();ctx.arc(X(c)+cell/2,Y(r)+cell/2,cell*0.12,0,7);ctx.fill();});
+  HW.forEach(([r,c],i)=>inkLine(X(c),Y(r),X(c+1),Y(r),i*7+1));
+  VW.forEach(([c,r],i)=>inkLine(X(c),Y(r),X(c),Y(r+1),i*7+500));
+  letter('S',0,0);
+  ctx.save();ctx.translate(-cell*0.18,0);ctx.font='';letter('E',9,10);ctx.restore();
+  drawPlayer(X(drawPos.x)+cell/2,Y(drawPos.y)+cell/2,cell);
+}
+// smooth movement
+function animate(){
+  const dx=player.c-drawPos.x,dy=player.r-drawPos.y;
+  if(Math.abs(dx)+Math.abs(dy)>0.001){drawPos.x+=dx*0.35;drawPos.y+=dy*0.35;draw();}
+  requestAnimationFrame(animate);
+}
+// timer
+let t0=null,timerId=null,done=false;
+const tEl=document.getElementById('timer');
+function tick(){tEl.textContent=((performance.now()-t0)/1000).toFixed(1)+'s'}
+function move(dr,dc){
+  if(done) return;
+  const m=canMove(player.r,player.c,dr,dc);
+  if(!m){bump();return}
+  if(t0===null){t0=performance.now();timerId=setInterval(tick,100)}
+  if(m==='win'){player.c+=1;win();return}
+  trail.push([player.r,player.c]);player.r+=dr;player.c+=dc;
+  if(navigator.vibrate) navigator.vibrate(5);
+}
+function bump(){cv.animate([{transform:'translateX(0)'},{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],{duration:150})}
+function win(){
+  done=true;clearInterval(timerId);const t=(performance.now()-t0)/1000;tick();
+  const best=+store.get('paperMazeBest')||Infinity;
+  let msg=`Time: ${t.toFixed(1)}s`;
+  if(t<best){store.set('paperMazeBest',t);msg+=' · new best!'}
+  document.getElementById('winTime').textContent=msg;showBest();
+  setTimeout(()=>document.getElementById('win').classList.add('show'),250);
+  confetti();if(navigator.vibrate) navigator.vibrate([40,40,80]);
+}
+function reset(){
+  player={...START};drawPos={x:START.c,y:START.r};trail=[];done=false;t0=null;clearInterval(timerId);
+  tEl.textContent='0.0s';document.getElementById('win').classList.remove('show');draw();
+}
+function showBest(){const b=store.get('paperMazeBest');document.getElementById('best').textContent='Best: '+(b?(+b).toFixed(1)+'s':'–')}
+// confetti
+const cc=document.getElementById('confetti'),cx=cc.getContext('2d');
+function confetti(){
+  cc.width=innerWidth;cc.height=innerHeight;
+  const cols=['#e4572e','#f3a712','#29335c','#669bbc','#a8c686'];
+  const ps=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:-Math.random()*innerHeight*0.9-10,
+    vx:(Math.random()-.5)*60,vy:120+Math.random()*180,r:Math.random()*5+3,c:cols[Math.random()*5|0],
+    a:Math.random()*6,va:(Math.random()-.5)*8,w:Math.random()*6}));
+  const t0=performance.now();
+  function step(){const el=(performance.now()-t0)/1000;cx.clearRect(0,0,cc.width,cc.height);
+    if(el>=3.2) return;
+    ps.forEach(p=>{const x=p.x+p.vx*el+Math.sin(el*3+p.w)*20,y=p.y+p.vy*el*1.4;
+      cx.save();cx.globalAlpha=Math.max(0,Math.min(1,3.2-el));cx.translate(x,y);cx.rotate(p.a+p.va*el);
+      cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});
+    requestAnimationFrame(step)}
+  step();
+}
+// controls: tap or hold arrows, keyboard, swipe on board
+const dirs={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]};
+for(const id in dirs){
+  const b=document.getElementById(id);let rep=null;
+  const start=e=>{e.preventDefault();move(...dirs[id]);clearInterval(rep);
+    rep=setTimeout(()=>{rep=setInterval(()=>move(...dirs[id]),130)},300)};
+  const stop=()=>{clearTimeout(rep);clearInterval(rep)};
+  b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
+}
+addEventListener('keydown',e=>{const k={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[e.key];
+  if(k){e.preventDefault();move(...dirs[k])}});
+let sx,sy;cv.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+cv.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<20) return;
+  Math.abs(dx)>Math.abs(dy)?move(0,dx>0?1:-1):move(dy>0?1:-1,0)});
+document.getElementById('reset').onclick=reset;document.getElementById('again').onclick=reset;
+addEventListener('resize',size);showBest();size();animate();
+// test hook
+window.__maze={confetti,move,get player(){return player},get done(){return done}};
+</script>
+</body>
+</html>
